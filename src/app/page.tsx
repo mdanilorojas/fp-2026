@@ -1,7 +1,20 @@
+'use client';
+
+import { useHouseStore } from '@/hooks/useHouseStore';
+import { PuertaIntro } from '@/components/PuertaIntro';
+import { HouseMap } from '@/components/HouseMap';
+import { AppShell } from '@/components/AppShell';
+
 export default function HomePage() {
+  const hasVisitedPuerta = useHouseStore((s) => s.visitedRooms.has('puerta'));
+
+  if (!hasVisitedPuerta) {
+    return <PuertaIntro />;
+  }
+
   return (
-    <main className="min-h-screen flex items-center justify-center">
-      <p className="font-serif text-3xl">La casa de Flor</p>
-    </main>
+    <AppShell currentRoomSlug={null} showBack={false}>
+      <HouseMap />
+    </AppShell>
   );
 }
