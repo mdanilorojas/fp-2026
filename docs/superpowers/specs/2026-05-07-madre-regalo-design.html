@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>La casa de Flor — Design Spec (visual)</title>
+<style>
+  :root {
+    --bg: #fbf5ea;
+    --bg-2: #f3ede1;
+    --ink: #2a1f14;
+    --muted: #7a6652;
+    --gold: #d9a441;
+    --orange: #e9783f;
+    --cacao: #5a3a24;
+    --deep: #3b2a1a;
+    --paper: #f7e6c8;
+    --leaf: #4f7a4f;
+    --night: #1e2635;
+    --cushion: #e8d9b8;
+    --line: #e8dcc5;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: linear-gradient(180deg, #f8f1e2 0%, #f3ede1 100%);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 28px 120px; }
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  h1 em { color: var(--orange); font-style: italic; }
+  .subtitle {
+    color: var(--muted);
+    font-size: 19px;
+    max-width: 780px;
+    margin: 0 0 8px;
+  }
+  .meta {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    color: var(--muted); font-size: 14px;
+    padding: 14px 0 0;
+    margin: 0 0 48px;
+    border-top: 1px solid var(--line);
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 64px 0 14px;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 36px 0 10px;
+  }
+  p { margin: 0 0 14px; font-size: 17px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 26px 28px;
+    box-shadow: 0 10px 30px rgba(60, 40, 20, 0.06);
+  }
+  .two {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--paper);
+    color: var(--cacao);
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+  .pill {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--deep);
+    color: var(--paper);
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  /* ========== HERO MOCKUP ========== */
+  .hero {
+    position: relative;
+    border-radius: 22px;
+    overflow: hidden;
+    aspect-ratio: 16/7;
+    margin: 24px 0 8px;
+    background:
+      radial-gradient(ellipse at 50% 70%, #ffd28a 0%, #e9783f 35%, #c04a2a 70%, #3b2515 100%);
+  }
+  .hero .sun {
+    position: absolute; left: 50%; bottom: 24%;
+    transform: translateX(-50%);
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff3c4 0%, #ffd28a 55%, rgba(255,210,138,0) 100%);
+    filter: blur(2px);
+    animation: sunFloat 6s ease-in-out infinite, sunPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes sunFloat {
+    0%,100% { transform: translate(-50%, 0); }
+    50%     { transform: translate(-50%, -6px); }
+  }
+  @keyframes sunPulse {
+    0%,100% { filter: blur(2px) brightness(1); }
+    50%     { filter: blur(3px) brightness(1.1); }
+  }
+  .hero .leaves {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(160px 280px at 8% 110%, #1e3620 0%, rgba(30,54,32,0) 70%),
+      radial-gradient(180px 220px at 92% 110%, #1e3620 0%, rgba(30,54,32,0) 70%);
+  }
+  .hero .door {
+    position: absolute; left: 50%; top: 30%;
+    transform: translateX(-50%);
+    width: 110px; height: 180px;
+    background: linear-gradient(180deg, #5a3a24 0%, #3b2515 100%);
+    border: 4px solid #d9a441;
+    border-radius: 8px 8px 2px 2px;
+    box-shadow: 0 0 24px rgba(217,164,65,0.25);
+  }
+  .hero .title {
+    position: absolute; left: 0; right: 0; top: 10%;
+    text-align: center;
+    color: #fff8ef;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 38px;
+    font-weight: 500;
+    font-style: italic;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+  }
+  .hero .btn {
+    position: absolute; left: 50%; bottom: 9%;
+    transform: translateX(-50%);
+    background: #fff8ef; color: #3b2515;
+    padding: 14px 28px; border-radius: 999px;
+    font-weight: 600; font-size: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  /* ========== HOUSE PLAN ========== */
+  .house-plan {
+    background: #f7efdd;
+    border: 2px solid var(--cacao);
+    border-radius: 16px;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 160px);
+    gap: 12px;
+    position: relative;
+  }
+  .room-tile {
+    background: white;
+    border: 1.5px dashed var(--cacao);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .room-tile .num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--gold); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    align-self: flex-start;
+  }
+  .room-tile h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 10px 0 4px;
+  }
+  .room-tile p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.35;
+  }
+  .room-tile.night { background: linear-gradient(180deg, #1e2635 0%, #0e121c 100%); color: #fff8ef; border-color: var(--gold); }
+  .room-tile.night h4 { color: #fff8ef; }
+  .room-tile.night p { color: #d9c7a5; }
+  .room-tile.night .num { background: #fef3c7; color: #1e2635; }
+  .room-tile.sunset { background: linear-gradient(180deg, #ffd28a 0%, #e9783f 100%); color: #fff8ef; border-color: #c04a2a; }
+  .room-tile.sunset h4, .room-tile.sunset p { color: #3b2515; }
+  .room-tile.buzon { background: linear-gradient(180deg, #f7e6c8 0%, #e9c068 100%); grid-column: span 3; grid-row: 3; height: 120px; border-color: var(--gold); border-style: solid; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+  .room-tile.buzon .num { background: var(--deep); color: var(--paper); }
+  .house-plan .legend {
+    position: absolute; top: 8px; right: 16px;
+    font-family: 'Playfair Display', serif;
+    color: var(--cacao);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* ========== FLOW DIAGRAM ========== */
+  .flow {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 30px;
+    overflow-x: auto;
+  }
+  .flow svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+  /* ========== KITCHEN MEMORIES ========== */
+  .memories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .memory {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    position: relative;
+  }
+  .memory .icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--paper);
+    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .memory h4 {
+    margin: 0 0 6px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .memory p {
+    font-size: 14px; color: var(--muted);
+    margin: 0;
+  }
+
+  /* ========== LETTER MOCKUP ========== */
+  .letter-mock {
+    background: #fffbef;
+    padding: 42px 54px;
+    border-radius: 2px;
+    box-shadow: 0 30px 60px rgba(60,40,20,0.12), inset 0 0 0 1px rgba(90,58,36,0.08);
+    font-family: 'Caveat', 'Dancing Script', cursive;
+    font-size: 24px;
+    color: var(--deep);
+    line-height: 1.5;
+    max-width: 560px;
+    margin: 14px auto;
+    transform: rotate(-0.5deg);
+    position: relative;
+  }
+  .letter-mock::before, .letter-mock::after {
+    content: "";
+    position: absolute; inset: 14px;
+    border: 1px dashed rgba(90,58,36,0.12);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* ========== TIMELINE ========== */
+  .timeline {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px 20px;
+    align-items: baseline;
+  }
+  .timeline .day { font-family: 'Playfair Display', serif; color: var(--orange); font-size: 18px; }
+  .timeline .task { font-size: 15px; }
+
+  /* ========== SCOPE TABLE ========== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  td strong { color: var(--ink); }
+  .strike { text-decoration: line-through; color: var(--muted); }
+
+  details summary {
+    cursor: pointer;
+    padding: 14px 20px;
+    background: var(--paper);
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--deep);
+    list-style: none;
+  }
+  details summary::before {
+    content: "▸ ";
+    color: var(--orange);
+  }
+  details[open] summary::before { content: "▾ "; }
+  details[open] summary { margin-bottom: 14px; }
+  details { margin: 12px 0; }
+
+  .callout {
+    background: linear-gradient(135deg, #fff4db 0%, #ffe7b8 100%);
+    border-left: 4px solid var(--gold);
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 16px;
+  }
+  .callout strong { color: var(--deep); }
+
+  hr { border: none; border-top: 1px solid var(--line); margin: 48px 0; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1><em>La casa de Flor</em></h1>
+    <p class="subtitle">Siete cuartos para Flor Piedra, 73 años, nacida en Pasaje. Un regalo digital del Día de la Madre que ella puede habitar, no solo ver.</p>
+    <div class="meta">
+      <div><b>Fecha:</b> 2026-05-07</div>
+      <div><b>Deadline:</b> domingo 2026-05-10</div>
+      <div><b>Hijo autor:</b> Danilo, 43 años</div>
+      <div><b>Dispositivo objetivo:</b> iPad Safari</div>
+      <div><b>Hosting:</b> Vercel (URL privada, noindex)</div>
+    </div>
+
+    <h2>1 · La idea en una pantalla</h2>
+    <p>No es un tour por capítulos. Es una <strong>casa</strong> con siete cuartos. Flor entra, camina por ellos en el orden que quiera, a su ritmo. Puede volver el martes siguiente, o el mes siguiente, y la casa seguirá ahí para ella.</p>
+
+    <div class="hero">
+      <div class="leaves"></div>
+      <div class="sun"></div>
+      <div class="door"></div>
+      <div class="title">Flor, hoy te toca recibir</div>
+      <div class="btn">EMPEZAR TU REGALO</div>
+    </div>
+    <p style="text-align: center; color: var(--muted); font-size: 13px; margin-top: 10px;"><em>Cuarto 1 — La puerta (mockup con sol animado en vivo)</em></p>
+
+    <h2>2 · El plano de la casa</h2>
+    <p>Después de cruzar la puerta, Flor ve el plano. Puede tocar cualquier cuarto. El buzón (cuarto 7) es el cierre y se destaca visualmente.</p>
+
+    <div class="house-plan">
+      <div class="legend">La casa de Flor</div>
+
+      <div class="room-tile sunset">
+        <div class="num">2</div>
+        <div>
+          <h4>Pasaje</h4>
+          <p>El pueblo donde todo empezó.</p>
+        </div>
+      </div>
+
+      <div class="room-tile">
+        <div class="num">3</div>
+        <div>
+          <h4>La cocina</h4>
+          <p>5 objetos, 5 memorias reales.</p>
+        </div>
+      </div>
+
+      <div class="room-tile">
+        <div class="num">4</div>
+        <div>
+          <h4>El patio</h4>
+          <p>Fido, Lila y un jardín que se riega solo con tus manos.</p>
+        </div>
+      </div>
+
+      <div class="room-tile">
+        <div class="num">5</div>
+        <div>
+          <h4>La sala de música</h4>
+          <p>Tocadiscos. Pasillos, chichera, recuerdo.</p>
+        </div>
+      </div>
+
+      <div class="room-tile night">
+        <div class="num">6</div>
+        <div>
+          <h4>Los que siguen</h4>
+          <p>Una ventana nocturna. Tres velas: papá, Eloy, Julia.</p>
+        </div>
+      </div>
+
+      <div class="room-tile">
+        <div class="num">1</div>
+        <div>
+          <h4>La puerta</h4>
+          <p>Entrada (solo la primera vez).</p>
+        </div>
+      </div>
+
+      <div class="room-tile buzon">
+        <div class="num">7</div>
+        <div>
+          <h4>El buzón</h4>
+          <p>Un sobre con tu nombre. Dentro: una carta con la voz de Danilo y tres cupones.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>3 · User flow</h2>
+    <p>Primera visita: flujo sugerido que guía hasta que haya visitado 6 cuartos. Después: libre. El buzón se desbloquea cuando los otros 6 fueron vistos — o desde el primer día con un botón directo si Flor lo prefiere.</p>
+
+    <div class="flow">
+      <svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a6652"/>
+          </marker>
+          <style>
+            .node { fill: #fff; stroke: #5a3a24; stroke-width: 1.5; }
+            .node-sunset { fill: #ffd28a; stroke: #c04a2a; stroke-width: 1.5; }
+            .node-night { fill: #1e2635; stroke: #d9a441; stroke-width: 1.5; }
+            .node-buzon { fill: #f7e6c8; stroke: #d9a441; stroke-width: 2.5; }
+            .node-start { fill: #fff8ef; stroke: #3b2515; stroke-width: 2; stroke-dasharray: 4,3; }
+            .lbl { font-family: 'Playfair Display', Georgia, serif; font-size: 15px; fill: #3b2a1a; font-weight: 500; }
+            .lbl-sm { font-family: Inter, sans-serif; font-size: 11px; fill: #7a6652; }
+            .lbl-night { fill: #fff8ef; }
+            .line { stroke: #7a6652; stroke-width: 1.2; fill: none; }
+            .line-dash { stroke: #b8a482; stroke-width: 1; fill: none; stroke-dasharray: 3,4; }
+          </style>
+        </defs>
+
+        <!-- Start: URL -->
+        <rect class="node-start" x="20" y="30" width="150" height="52" rx="10" />
+        <text class="lbl" x="95" y="56" text-anchor="middle">Abrir URL en iPad</text>
+        <text class="lbl-sm" x="95" y="72" text-anchor="middle">Safari, link privado</text>
+
+        <!-- Puerta -->
+        <rect class="node-sunset" x="220" y="30" width="150" height="52" rx="10" />
+        <text class="lbl" x="295" y="52" text-anchor="middle">1 · La puerta</text>
+        <text class="lbl-sm" x="295" y="70" text-anchor="middle">Tap → desbloquea audio</text>
+        <line class="line" x1="170" y1="56" x2="218" y2="56" marker-end="url(#arrow)"/>
+
+        <!-- Plano de la casa -->
+        <rect class="node" x="420" y="25" width="220" height="62" rx="12" />
+        <text class="lbl" x="530" y="52" text-anchor="middle">Plano de la casa</text>
+        <text class="lbl-sm" x="530" y="70" text-anchor="middle">6 cuartos + buzón</text>
+        <line class="line" x1="370" y1="56" x2="418" y2="56" marker-end="url(#arrow)"/>
+
+        <!-- From plan arrows to rooms -->
+        <path class="line" d="M 530 90 C 530 120, 180 140, 120 160" marker-end="url(#arrow)"/>
+        <path class="line" d="M 530 90 C 530 120, 340 140, 300 160" marker-end="url(#arrow)"/>
+        <path class="line" d="M 530 90 C 530 120, 530 140, 490 160" marker-end="url(#arrow)"/>
+        <path class="line" d="M 530 90 C 530 120, 680 140, 680 160" marker-end="url(#arrow)"/>
+        <path class="line" d="M 530 90 C 530 120, 850 140, 870 160" marker-end="url(#arrow)"/>
+
+        <!-- Room 2 - Pasaje -->
+        <rect class="node-sunset" x="40" y="165" width="160" height="66" rx="10" />
+        <text class="lbl" x="120" y="190" text-anchor="middle">2 · Pasaje</text>
+        <text class="lbl-sm" x="120" y="208" text-anchor="middle">Foto + una línea.</text>
+        <text class="lbl-sm" x="120" y="222" text-anchor="middle">Reverente.</text>
+
+        <!-- Room 3 - Cocina -->
+        <rect class="node" x="220" y="165" width="160" height="66" rx="10" />
+        <text class="lbl" x="300" y="190" text-anchor="middle">3 · La cocina</text>
+        <text class="lbl-sm" x="300" y="208" text-anchor="middle">5 objetos · 5 memorias</text>
+        <text class="lbl-sm" x="300" y="222" text-anchor="middle">específicas (reales)</text>
+
+        <!-- Room 4 - Patio -->
+        <rect class="node" x="400" y="165" width="180" height="66" rx="10" />
+        <text class="lbl" x="490" y="190" text-anchor="middle">4 · El patio</text>
+        <text class="lbl-sm" x="490" y="208" text-anchor="middle">Jardín que florece con tap</text>
+        <text class="lbl-sm" x="490" y="222" text-anchor="middle">+ Fido y Lila</text>
+
+        <!-- Room 5 - Música -->
+        <rect class="node" x="600" y="165" width="160" height="66" rx="10" />
+        <text class="lbl" x="680" y="190" text-anchor="middle">5 · Sala de música</text>
+        <text class="lbl-sm" x="680" y="208" text-anchor="middle">Tocadiscos vintage</text>
+        <text class="lbl-sm" x="680" y="222" text-anchor="middle">3 canciones</text>
+
+        <!-- Room 6 - Familia -->
+        <rect class="node-night" x="780" y="165" width="180" height="66" rx="10" />
+        <text class="lbl lbl-night" x="870" y="190" text-anchor="middle">6 · Los que siguen</text>
+        <text class="lbl-sm" fill="#d9c7a5" x="870" y="208" text-anchor="middle">Ventana nocturna</text>
+        <text class="lbl-sm" fill="#d9c7a5" x="870" y="222" text-anchor="middle">Velas por 3</text>
+
+        <!-- Bridge: Cocina → Familia (via mecedora) -->
+        <path class="line-dash" d="M 300 231 Q 300 290 600 290 Q 870 290 870 231" />
+        <text class="lbl-sm" x="600" y="285" text-anchor="middle" fill="#7a6652" font-style="italic">puente: la mecedora de papá → cuarto 6</text>
+
+        <!-- Back to plan -->
+        <path class="line" d="M 120 165 C 120 110, 440 90, 460 88" marker-end="url(#arrow)"/>
+
+        <!-- Return to plan arrow from each -->
+        <text class="lbl-sm" x="490" y="330" text-anchor="middle">Cada cuarto tiene botón "Volver a la casa" → vuelve al plano</text>
+
+        <!-- Buzón state -->
+        <rect class="node-buzon" x="290" y="370" width="400" height="80" rx="14" />
+        <text class="lbl" x="490" y="398" text-anchor="middle" font-size="18">7 · El buzón</text>
+        <text class="lbl-sm" x="490" y="418" text-anchor="middle">Sobre con nombre "Flor Piedra"</text>
+        <text class="lbl-sm" x="490" y="434" text-anchor="middle">Audio de Danilo leyendo carta + 3 cupones</text>
+
+        <!-- Arrow from plan to buzón (dashed, unlocks) -->
+        <path class="line-dash" d="M 530 90 C 530 250, 490 340, 490 368" marker-end="url(#arrow)"/>
+        <text class="lbl-sm" x="560" y="225" font-style="italic">desbloquea tras visitar 6 cuartos</text>
+
+        <!-- End actions -->
+        <rect class="node" x="60" y="490" width="180" height="50" rx="8" />
+        <text class="lbl-sm" x="150" y="512" text-anchor="middle">Volver a la casa</text>
+        <text class="lbl-sm" x="150" y="528" text-anchor="middle">(libre navegación)</text>
+
+        <rect class="node" x="260" y="490" width="180" height="50" rx="8" />
+        <text class="lbl-sm" x="350" y="512" text-anchor="middle">Guardar un cupón</text>
+        <text class="lbl-sm" x="350" y="528" text-anchor="middle">(localStorage)</text>
+
+        <rect class="node" x="460" y="490" width="180" height="50" rx="8" />
+        <text class="lbl-sm" x="550" y="512" text-anchor="middle">Volver a escuchar</text>
+        <text class="lbl-sm" x="550" y="528" text-anchor="middle">(re-reproduce carta)</text>
+
+        <rect class="node-buzon" x="660" y="490" width="220" height="50" rx="8" />
+        <text class="lbl-sm" x="770" y="512" text-anchor="middle">/print-coupons</text>
+        <text class="lbl-sm" x="770" y="528" text-anchor="middle">(imprimir A5 cupones físicos)</text>
+
+        <path class="line" d="M 400 450 C 400 470, 180 485, 150 488" marker-end="url(#arrow)"/>
+        <path class="line" d="M 490 450 C 490 470, 350 485, 350 488" marker-end="url(#arrow)"/>
+        <path class="line" d="M 580 450 C 580 470, 550 485, 550 488" marker-end="url(#arrow)"/>
+        <path class="line" d="M 620 450 C 650 470, 770 485, 770 488" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
+
+    <h2>4 · Las 5 memorias de la cocina</h2>
+    <p>El corazón del regalo. En vez de frases genéricas ("cada comida era amor"), cada objeto tocable de la cocina es una memoria específica escrita por Danilo. Esto hace el regalo <strong>insustituible</strong>.</p>
+
+    <div class="memories">
+      <div class="memory">
+        <div class="icon">🥘</div>
+        <h4>La olla</h4>
+        <p>Cangrejos, mariscos, pollo con champiñones. Y una disculpa corta por las críticas de décadas.</p>
+      </div>
+      <div class="memory">
+        <div class="icon">🂠</div>
+        <h4>La mesa</h4>
+        <p>Cartas. Jenga. Cantar. La cocina como el cuarto donde se vivía, no solo donde se comía.</p>
+      </div>
+      <div class="memory">
+        <div class="icon">🫖</div>
+        <h4>La olla grande</h4>
+        <p>El intento de negocio de colada morada. No salió. Salió una memoria mejor.</p>
+      </div>
+      <div class="memory">
+        <div class="icon">🪟</div>
+        <h4>La ventana</h4>
+        <p>El encierro del COVID. Los tres juntos. Nadie se enfermó. Tú nos cuidaste.</p>
+      </div>
+      <div class="memory" style="background: linear-gradient(180deg, #fff 0%, #e8d9b8 100%);">
+        <div class="icon">🪑</div>
+        <h4>La mecedora de papá</h4>
+        <p>Con el cojín crema que tú le tejiste. Puente sutil al cuarto de los que siguen.</p>
+      </div>
+    </div>
+
+    <h2>5 · Cuarto 6 — Los que siguen</h2>
+    <p>El único cuarto que rompe con el atardecer. Transición a noche estrellada. Una ventana grande al cielo, tres velas suaves, tres retratos pequeños.</p>
+
+    <div class="two">
+      <div class="card" style="background: linear-gradient(180deg, #1e2635 0%, #0e121c 100%); color: #fff8ef; border: 1px solid var(--gold);">
+        <p style="color: #fff8ef; font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; margin: 0 0 20px;">Hay personas que no se van del todo. Se quedan en la forma de amar que te dejaron.</p>
+        <div style="display: flex; justify-content: space-around; margin: 30px 0 16px;">
+          <div style="text-align: center;">
+            <div style="width: 14px; height: 50px; background: linear-gradient(180deg, #f9b572, #d9a441); margin: 0 auto 8px; border-radius: 2px; box-shadow: 0 0 18px rgba(249,181,114,0.6);"></div>
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #4a3b2b; border: 2px solid #d9a441; margin: 0 auto;"></div>
+            <p style="color: #d9c7a5; font-size: 13px; margin: 8px 0 0;">Eloy</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 16px; height: 62px; background: linear-gradient(180deg, #f9b572, #d9a441); margin: 0 auto 8px; border-radius: 2px; box-shadow: 0 0 24px rgba(249,181,114,0.7);"></div>
+            <div style="width: 64px; height: 64px; border-radius: 50%; background: #4a3b2b; border: 2px solid #d9a441; margin: 0 auto;"></div>
+            <p style="color: #fff8ef; font-size: 14px; margin: 8px 0 0;">Papá</p>
+          </div>
+          <div style="text-align: center;">
+            <div style="width: 14px; height: 50px; background: linear-gradient(180deg, #f9b572, #d9a441); margin: 0 auto 8px; border-radius: 2px; box-shadow: 0 0 18px rgba(249,181,114,0.6);"></div>
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #4a3b2b; border: 2px solid #d9a441; margin: 0 auto;"></div>
+            <p style="color: #d9c7a5; font-size: 13px; margin: 8px 0 0;">Julia</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p><strong>Sin 3D, sin constelación técnica.</strong> Solo una ventana, tres velas, tres fotos, una frase. El cuarto funciona aunque falten fotos (vela sin retrato si hace falta).</p>
+        <p>Tap en una vela → brilla más → retrato se ilumina → aparece una línea corta, específica a esa persona.</p>
+        <p>Si existe <code>papa-recuerdo.mp4</code>, aparece un botón discreto "Ver recuerdo" bajo la foto de papá.</p>
+        <p class="pill">Música: <code>room-familia.mp3</code></p>
+      </div>
+    </div>
+
+    <h2>6 · Cuarto 7 — El buzón (el cierre)</h2>
+    <p>Todo desemboca aquí. Un sobre con su nombre escrito a mano. Se abre. Sale una carta. La voz de Danilo empieza a sonar. El texto aparece línea por línea, sincronizado.</p>
+
+    <div class="letter-mock">
+      Flor,<br/><br/>
+      Este regalo no alcanza para decir todo lo que tengo que decirte, pero es un comienzo.<br/><br/>
+      Durante muchos años vi tus cuidados como si fueran parte normal de la vida...<br/><br/>
+      <span style="opacity:0.4;">(continúa — texto completo en la spec)</span>
+    </div>
+
+    <div class="callout">
+      <strong>Upgrade crítico:</strong> Danilo graba un audio suyo leyendo la carta. Se sincroniza con el texto. Si el audio no existe todavía, el texto aparece a ritmo de lectura. Cuando el audio llega, la experiencia salta de nivel sin tocar código.
+    </div>
+
+    <p>Al terminar la carta, 3 cupones caen sobre la mesa:</p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0;">
+      <div class="card" style="background: #fff4db; border: 2px solid var(--gold); text-align: center; padding: 22px;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Cupón 1</div>
+        <h3 style="margin: 8px 0;">Masaje</h3>
+        <p style="font-size: 13px; margin: 0;">Para que descanses ese cuerpo que tanto ha cuidado a todos.</p>
+      </div>
+      <div class="card" style="background: #fff4db; border: 2px solid var(--gold); text-align: center; padding: 22px;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Cupón 2</div>
+        <h3 style="margin: 8px 0;">Viaje</h3>
+        <p style="font-size: 13px; margin: 0;">Tú escoges el lugar. Yo me encargo de ayudarte a llegar.</p>
+      </div>
+      <div class="card" style="background: #fff4db; border: 2px solid var(--gold); text-align: center; padding: 22px;">
+        <div style="font-family: 'Playfair Display', serif; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Cupón 3</div>
+        <h3 style="margin: 8px 0;">$1,000</h3>
+        <p style="font-size: 13px; margin: 0;">Canjeables cuando quieras, sin dar explicaciones.</p>
+      </div>
+    </div>
+
+    <h2>7 · Qué se cortó del prompt original (y por qué)</h2>
+
+    <table>
+      <tr>
+        <th>Cortado</th>
+        <th>Por qué</th>
+      </tr>
+      <tr>
+        <td class="strike"><strong>Capítulo "libreta"</strong></td>
+        <td>El miedo a la libreta era de Danilo, no de Flor. El capítulo se sentía más sobre la culpa del hijo que sobre ella.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>Mini-juego estilo Candy Crush</strong></td>
+        <td>Flor juega Candy Crush <em>de verdad</em>. Darle un match-3 watered-down sería condescendiente. Reemplazo: un jardín que florece al tocar — juguete, no juego.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>Capítulo "tres hijos"</strong></td>
+        <td>Meter a Stefania y al tercer hermano sin coordinación real sería performativo. Este regalo es <strong>de Danilo</strong>.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>Constelación 3D con R3F</strong></td>
+        <td>Vanidad técnica. Una ventana nocturna 2D con velas bien animadas tiene más peso íntimo y cero riesgo en iPad.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>/gallery separada</strong></td>
+        <td>Las fotos viven dentro de los cuartos donde importan. Galería aparte = depósito anónimo.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>/presentation separada</strong></td>
+        <td>Si Danilo quiere presentarle, se sienta con ella. No necesita ruta.</td>
+      </tr>
+      <tr>
+        <td class="strike"><strong>Microcopy tipo "no todo héroe hace ruido"</strong></td>
+        <td>Frase por frase aterrizan; apiladas se neutralizan. Se redujo al mínimo.</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      <strong>Resultado:</strong> 7 cuartos bien pulidos en vez de 10 capítulos apurados. Mismos detalles emocionales, más concentrados.
+    </div>
+
+    <h2>8 · Stack y arquitectura</h2>
+    <table>
+      <tr><th>Capa</th><th>Elección</th></tr>
+      <tr><td>Framework</td><td>Next.js 15 App Router + TypeScript</td></tr>
+      <tr><td>Estilos</td><td>Tailwind + CSS variables</td></tr>
+      <tr><td>Animación</td><td>Framer Motion</td></tr>
+      <tr><td>3D</td><td>Ninguno (cortado)</td></tr>
+      <tr><td>Estado</td><td>Zustand + persist → localStorage</td></tr>
+      <tr><td>Audio</td><td>Dos <code>&lt;audio&gt;</code> alternados para cross-fade. No Web Audio API.</td></tr>
+      <tr><td>Hosting</td><td>Vercel, deploy automático desde main</td></tr>
+    </table>
+
+    <h2>9 · Cronograma</h2>
+    <div class="timeline">
+      <div class="day">Jue 7 noche</div><div class="task">Scaffold, tokens, AppShell, AudioEngine, La puerta, Pasaje, plano de la casa. Primer deploy a Vercel.</div>
+      <div class="day">Vie 8</div><div class="task">Cocina (5 memorias), Patio (jardín + perritos), Sala de música (tocadiscos).</div>
+      <div class="day">Sáb 9 AM</div><div class="task">Cuarto de los que siguen, Buzón con carta + cupones, <code>/print-coupons</code>.</div>
+      <div class="day">Sáb 9 PM</div><div class="task">Danilo entrega fotos y audios. QA en iPad real. Ajustes.</div>
+      <div class="day">Dom 10</div><div class="task">Regalo a Flor.</div>
+    </div>
+
+    <h2>10 · Responsabilidades de assets</h2>
+    <details>
+      <summary>Ver tabla completa de qué es obligatorio, qué es deseable, qué es opcional</summary>
+      <table>
+        <tr><th>Asset</th><th>Prioridad</th><th>Quién</th><th>Cuándo</th></tr>
+        <tr><td>carta-danilo.mp3 (voz de Danilo)</td><td><strong>Crítico</strong></td><td>Danilo</td><td>Sábado máximo</td></tr>
+        <tr><td>room-cocina.mp3</td><td>Alta</td><td>Danilo</td><td>Viernes</td></tr>
+        <tr><td>flor-01.jpg (foto de Flor)</td><td>Alta</td><td>Danilo</td><td>Sábado AM</td></tr>
+        <tr><td>pasaje-01.jpg</td><td>Alta</td><td>Danilo</td><td>Sábado AM</td></tr>
+        <tr><td>papa-01.jpg</td><td>Alta</td><td>Danilo</td><td>Sábado AM</td></tr>
+        <tr><td>eloy-01.jpg, julia-01.jpg</td><td>Media</td><td>Danilo</td><td>Cuando pueda</td></tr>
+        <tr><td>fido-01.jpg, lila-01.jpg</td><td>Media</td><td>Danilo</td><td>Cuando pueda</td></tr>
+        <tr><td>room-*.mp3 (demás cuartos)</td><td>Media</td><td>Danilo</td><td>Progresivo</td></tr>
+        <tr><td>song-1/2/3.mp3</td><td>Media</td><td>Danilo</td><td>Progresivo</td></tr>
+        <tr><td>papa-recuerdo.mp4</td><td>Opcional</td><td>Danilo</td><td>Si aparece</td></tr>
+      </table>
+      <p><em>Todos los placeholders se ignoran silenciosamente. La app nunca muestra un ícono roto.</em></p>
+    </details>
+
+    <h2>11 · Criterio de éxito</h2>
+    <div class="callout">
+      <p style="margin: 0;"><strong>Éxito =</strong> Flor llora de alegría, o sonríe largo rato, o al día siguiente vuelve a abrir la app.</p>
+      <p style="margin: 10px 0 0;"><strong>Éxito ≠</strong> código bonito, animaciones perfectas, Lighthouse 100.</p>
+    </div>
+
+    <hr/>
+
+    <p style="text-align: center; color: var(--muted); font-size: 14px;">
+      Documento canónico en <code>docs/superpowers/specs/2026-05-07-madre-regalo-design.md</code>.<br/>
+      Este HTML es la versión para revisión humana; el MD es para implementación.
+    </p>
+  </div>
+</body>
+</html>

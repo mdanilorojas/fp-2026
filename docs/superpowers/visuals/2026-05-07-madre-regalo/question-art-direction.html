@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dirección de arte — Regalo para mamá</title>
+<style>
+  :root {
+    --ink: #2a1f14;
+    --muted: #7a6652;
+    --paper: #fbf5ea;
+    --line: #e8dcc5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #f3ede1; color: var(--ink); font-family: 'Inter', system-ui, sans-serif; }
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: 40px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .lead { color: var(--muted); font-size: 18px; margin: 0 0 40px; max-width: 780px; line-height: 1.55; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(60, 40, 20, 0.08);
+    display: flex;
+    flex-direction: column;
+  }
+  .mock {
+    aspect-ratio: 4 / 3;
+    position: relative;
+    overflow: hidden;
+  }
+  .card .meta {
+    padding: 22px 24px 28px;
+  }
+  .card h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 500;
+    font-size: 24px;
+    margin: 0 0 6px;
+  }
+  .card .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .card p { margin: 0 0 12px; font-size: 15px; line-height: 1.55; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #f5efe0;
+    color: var(--muted);
+  }
+
+  /* =========== OPTION A: ATARDECER DE PASAJE =========== */
+  .mock-a {
+    background:
+      radial-gradient(ellipse at 50% 70%, #ffd28a 0%, #e9783f 35%, #c04a2a 70%, #3b2515 100%);
+  }
+  .mock-a .sun {
+    position: absolute;
+    left: 50%;
+    bottom: 22%;
+    transform: translateX(-50%);
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff3c4 0%, #ffd28a 60%, rgba(255,210,138,0) 100%);
+    filter: blur(2px);
+  }
+  .mock-a .leaves {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120px 220px at 10% 100%, #1e3620 0%, rgba(30,54,32,0) 70%),
+      radial-gradient(140px 180px at 90% 100%, #1e3620 0%, rgba(30,54,32,0) 70%);
+  }
+  .mock-a .title {
+    position: absolute;
+    left: 0; right: 0; top: 18%;
+    text-align: center;
+    color: #fff8ef;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 500;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    letter-spacing: 0.01em;
+  }
+  .mock-a .btn {
+    position: absolute;
+    left: 50%; bottom: 9%;
+    transform: translateX(-50%);
+    background: #fff8ef;
+    color: #3b2515;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+
+  /* =========== OPTION B: PAPEL Y TINTA =========== */
+  .mock-b {
+    background:
+      radial-gradient(circle at 30% 20%, rgba(217,164,65,0.12) 0%, rgba(217,164,65,0) 60%),
+      #f7e6c8;
+    position: relative;
+  }
+  .mock-b::before {
+    content: "";
+    position: absolute; inset: 24px;
+    border: 1px solid rgba(90,58,36,0.25);
+    border-radius: 6px;
+  }
+  .mock-b .ornament {
+    position: absolute;
+    left: 50%; top: 22%;
+    transform: translateX(-50%);
+    width: 56px; height: 56px;
+    border: 1.5px solid #5a3a24;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #5a3a24;
+    font-size: 22px;
+  }
+  .mock-b .title {
+    position: absolute;
+    left: 0; right: 0; top: 42%;
+    text-align: center;
+    color: #3b2a1a;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .mock-b .sub2 {
+    position: absolute;
+    left: 0; right: 0; top: 60%;
+    text-align: center;
+    color: #7a6652;
+    font-style: italic;
+    font-size: 14px;
+  }
+  .mock-b .btn {
+    position: absolute;
+    left: 50%; bottom: 14%;
+    transform: translateX(-50%);
+    background: #3b2a1a;
+    color: #f7e6c8;
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* =========== OPTION C: NOCHE DE ESTRELLAS =========== */
+  .mock-c {
+    background:
+      radial-gradient(ellipse at 50% 110%, #3b2d4a 0%, #1e2635 50%, #0e121c 100%);
+    position: relative;
+  }
+  .mock-c .stars {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,240,200,0.9), transparent),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,240,200,0.8), transparent),
+      radial-gradient(2px 2px at 30% 40%, rgba(255,240,200,1), transparent),
+      radial-gradient(1px 1px at 65% 55%, rgba(255,240,200,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 20% 75%, rgba(255,240,200,0.9), transparent),
+      radial-gradient(1px 1px at 90% 82%, rgba(255,240,200,0.8), transparent),
+      radial-gradient(2px 2px at 50% 30%, rgba(255,240,200,1), transparent),
+      radial-gradient(1px 1px at 75% 42%, rgba(255,240,200,0.7), transparent);
+  }
+  .mock-c .moon {
+    position: absolute;
+    right: 14%; top: 18%;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fef3c7, #d9a441);
+    box-shadow: 0 0 40px rgba(217,164,65,0.45);
+  }
+  .mock-c .title {
+    position: absolute;
+    left: 0; right: 0; top: 52%;
+    text-align: center;
+    color: #fff8ef;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-shadow: 0 2px 24px rgba(217,164,65,0.35);
+  }
+  .mock-c .sub2 {
+    position: absolute;
+    left: 0; right: 0; top: 68%;
+    text-align: center;
+    color: #d9c7a5;
+    font-style: italic;
+    font-size: 14px;
+  }
+  .mock-c .btn {
+    position: absolute;
+    left: 50%; bottom: 12%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #e9c068 0%, #d9a441 100%);
+    color: #1e2635;
+    padding: 11px 24px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    box-shadow: 0 8px 24px rgba(217,164,65,0.35);
+  }
+
+  .palette {
+    display: flex; gap: 6px; margin-top: 4px;
+  }
+  .sw { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.08); }
+
+  .footer-note {
+    margin-top: 40px;
+    padding: 22px 26px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Dirección de arte — tres caminos estéticos</h1>
+    <p class="lead">
+      Cada opción interpreta "cálido, ecuatoriano, nostálgico, premium" distinto. Todas usan la misma paleta base del master prompt, pero priorizan un ánimo diferente. Mira la pantalla de inicio renderizada y la nota sobre cómo cambia el resto de la experiencia.
+    </p>
+
+    <div class="grid">
+
+      <!-- OPTION A -->
+      <div class="card">
+        <div class="mock mock-a">
+          <div class="leaves"></div>
+          <div class="sun"></div>
+          <div class="title">Mamá, hoy te toca recibir</div>
+          <div class="btn">EMPEZAR TU REGALO</div>
+        </div>
+        <div class="meta">
+          <div class="sub">Opción A</div>
+          <h2>Atardecer de Pasaje</h2>
+          <p>Luz dorada, cielo costeño, hojas tropicales recortadas en silueta. Se siente <em>playa + casa de abuela + infancia</em>. El resto de la app usa mucho naranja quemado, cacao profundo, y fotos con viñeta cálida.</p>
+          <p><strong>Vibe:</strong> emocional, abierto, solar. El que más "grita" Ecuador costeño.</p>
+          <div class="palette">
+            <div class="sw" style="background:#e9783f"></div>
+            <div class="sw" style="background:#d9a441"></div>
+            <div class="sw" style="background:#3b2515"></div>
+            <div class="sw" style="background:#1e3620"></div>
+            <div class="sw" style="background:#fff8ef"></div>
+          </div>
+          <div class="tags">
+            <span class="tag">Naranja quemado</span>
+            <span class="tag">Hojas tropicales</span>
+            <span class="tag">Costa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTION B -->
+      <div class="card">
+        <div class="mock mock-b">
+          <div class="ornament">✦</div>
+          <div class="title">Mamá, hoy te toca recibir</div>
+          <div class="sub2">Un viaje de recuerdos, gratitud y regalos.</div>
+          <div class="btn">EMPEZAR</div>
+        </div>
+        <div class="meta">
+          <div class="sub">Opción B</div>
+          <h2>Papel y tinta</h2>
+          <p>Papel crema, tipografía serif elegante, ornamento sobrio, tinta café. Se siente <em>carta antigua + álbum + invitación de boda</em>. El resto de la app se vuelve tarjetas/capítulos como páginas de libro; fotos tipo polaroid.</p>
+          <p><strong>Vibe:</strong> íntimo, contenido, atemporal. El más "regalo serio".</p>
+          <div class="palette">
+            <div class="sw" style="background:#f7e6c8"></div>
+            <div class="sw" style="background:#d9a441"></div>
+            <div class="sw" style="background:#5a3a24"></div>
+            <div class="sw" style="background:#3b2a1a"></div>
+            <div class="sw" style="background:#7a6652"></div>
+          </div>
+          <div class="tags">
+            <span class="tag">Papel crema</span>
+            <span class="tag">Serif</span>
+            <span class="tag">Álbum</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTION C -->
+      <div class="card">
+        <div class="mock mock-c">
+          <div class="stars"></div>
+          <div class="moon"></div>
+          <div class="title">Mamá, hoy te toca recibir</div>
+          <div class="sub2">Hay amores que no hacen ruido.</div>
+          <div class="btn">EMPEZAR TU REGALO</div>
+        </div>
+        <div class="meta">
+          <div class="sub">Opción C</div>
+          <h2>Noche de estrellas</h2>
+          <p>Cielo profundo, luna dorada, estrellas tenues. Se siente <em>altar + cielo del valle + recuerdo</em>. Toda la app mantiene el cielo como telón y cada capítulo es una "habitación luminosa" dentro de la noche.</p>
+          <p><strong>Vibe:</strong> reverencial, contemplativo, el más "altar de gratitud". Excelente para el capítulo de pap&aacute; y abuelos; menos solar para el capítulo de juegos.</p>
+          <div class="palette">
+            <div class="sw" style="background:#1e2635"></div>
+            <div class="sw" style="background:#3b2d4a"></div>
+            <div class="sw" style="background:#d9a441"></div>
+            <div class="sw" style="background:#fef3c7"></div>
+            <div class="sw" style="background:#bfd7ea"></div>
+          </div>
+          <div class="tags">
+            <span class="tag">Noche</span>
+            <span class="tag">Luna</span>
+            <span class="tag">Altar</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-note">
+      <strong>Mi recomendación: Opción A (Atardecer de Pasaje)</strong> — es la que más conecta con la historia (ella es de Pasaje, El Oro; la luz cálida evoca infancia costeña). La noche de estrellas (C) la reservamos <em>dentro</em> de la experiencia para el capítulo 7 "Los que siguen presentes", que es donde ese tono encaja perfecto. Papel y tinta (B) es precioso pero se siente más a invitación/libro; puede quedar más frío con una persona mayor que espera calidez inmediata.
+    </div>
+  </div>
+</body>
+</html>
