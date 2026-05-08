@@ -20,3 +20,33 @@ Arrastras los archivos a `/public/{photos,audio,video}/...` siguiendo la estruct
 ## Criterio de éxito
 
 Flor llora de alegría, o sonríe largo rato, o al día siguiente vuelve a abrir la app.
+
+## Running locally
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open http://localhost:3000 in iPad Safari (via LAN) or desktop Safari.
+
+## Running tests
+
+```bash
+pnpm test
+```
+
+## Deploying to Vercel
+
+1. Log in to Vercel.
+2. Import this repo.
+3. Deploy — no env vars needed.
+4. URL: `fp-2026-<hash>.vercel.app`. Share only with Flor.
+
+## Asset workflow
+
+See `docs/ASSETS.md`.
+
+## QA before showing Flor
+
+See `docs/QA-CHECKLIST.md`.
