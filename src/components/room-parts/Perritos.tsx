@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { SafeImage } from '@/components/shared/SafeImage';
 
 const PERRITOS = [
-  { id: 'fido', name: 'Fido', src: '/photos/perritos/fido-01.jpg', role: 'perro' },
+  { id: 'fido', name: 'Fido', src: '/photos/perritos/fido-final.jpeg', role: 'perro' },
   { id: 'lila', name: 'Lila', src: '/photos/perritos/lila-01.jpg', role: 'perra' },
 ];
 

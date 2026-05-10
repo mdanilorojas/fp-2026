@@ -23,10 +23,11 @@ export function Candle({ label, active, size = 'sm', onClick }: Props) {
       className="group inline-flex flex-col items-center gap-3 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4"
     >
       <div className="relative" style={{ height: bodyH + flameH + 12, width: Math.max(bodyW + 6, flameW + 12) }}>
-        {/* glow halo */}
+        {/* glow halo — hidden when extinguished */}
         <motion.div
           aria-hidden="true"
-          animate={{ opacity: active ? 0.7 : 0.25 }}
+          initial={false}
+          animate={{ opacity: active ? 0.7 : 0 }}
           transition={{ duration: 0.6 }}
           className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
           style={{
@@ -37,14 +38,23 @@ export function Candle({ label, active, size = 'sm', onClick }: Props) {
             filter: 'blur(8px)',
           }}
         />
-        {/* flame */}
+        {/* flame — only flickers when lit */}
         <motion.div
-          animate={{
-            scaleY: [1, 1.1, 0.95, 1.08, 1],
-            scaleX: [1, 0.95, 1.05, 0.98, 1],
-            opacity: active ? 1 : 0.88,
-          }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          initial={false}
+          animate={
+            active
+              ? {
+                  scaleY: [1, 1.1, 0.95, 1.08, 1],
+                  scaleX: [1, 0.95, 1.05, 0.98, 1],
+                  opacity: 1,
+                }
+              : { opacity: 0, scaleY: 1, scaleX: 1 }
+          }
+          transition={
+            active
+              ? { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }
+              : { duration: 0.3 }
+          }
           className="absolute left-1/2 -translate-x-1/2 origin-bottom"
           style={{ width: flameW, height: flameH, top: 0 }}
         >

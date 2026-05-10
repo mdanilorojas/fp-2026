@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces, Caveat, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import { IntroAudio } from '@/components/IntroAudio';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -28,7 +29,10 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${fraunces.variable} ${caveat.variable} ${mono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <IntroAudio />
+        {children}
+      </body>
     </html>
   );
 }
