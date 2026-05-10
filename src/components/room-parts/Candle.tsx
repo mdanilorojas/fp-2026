@@ -12,46 +12,69 @@ type Props = {
 export function Candle({ label, active, size = 'sm', onClick }: Props) {
   const flameW = size === 'lg' ? 22 : 18;
   const flameH = size === 'lg' ? 32 : 26;
-  const bodyH = size === 'lg' ? 80 : 60;
+  const bodyH = size === 'lg' ? 96 : 72;
+  const bodyW = size === 'lg' ? 18 : 14;
+  const id = `flame-${label}`.replace(/\s+/g, '-');
   return (
     <button
       onClick={onClick}
       aria-label={`Vela por ${label}`}
-      className="flex flex-col items-center gap-3 group"
+      aria-pressed={active}
+      className="group inline-flex flex-col items-center gap-3 focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4"
     >
-      <div className="relative" style={{ height: bodyH + flameH + 10 }}>
+      <div className="relative" style={{ height: bodyH + flameH + 12, width: Math.max(bodyW + 6, flameW + 12) }}>
+        {/* glow halo */}
+        <motion.div
+          aria-hidden="true"
+          animate={{ opacity: active ? 0.7 : 0.25 }}
+          transition={{ duration: 0.6 }}
+          className="absolute left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          style={{
+            width: flameW * 5,
+            height: flameH * 3,
+            top: -6,
+            background: 'radial-gradient(circle, var(--color-accent) 0%, transparent 65%)',
+            filter: 'blur(8px)',
+          }}
+        />
+        {/* flame */}
         <motion.div
           animate={{
             scaleY: [1, 1.1, 0.95, 1.08, 1],
             scaleX: [1, 0.95, 1.05, 0.98, 1],
-            opacity: active ? 1 : 0.85,
+            opacity: active ? 1 : 0.88,
           }}
           transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute left-1/2 -translate-x-1/2 origin-bottom"
           style={{ width: flameW, height: flameH, top: 0 }}
         >
-          <svg viewBox="0 0 20 30" className="w-full h-full">
+          <svg viewBox="0 0 20 30" className="w-full h-full" aria-hidden="true">
             <defs>
-              <radialGradient id={`flame-${label}`} cx="0.5" cy="0.65" r="0.55">
-                <stop offset="0%" stopColor="#fff4c0" />
-                <stop offset="55%" stopColor="#f9b572" />
-                <stop offset="100%" stopColor="#d9a441" />
+              <radialGradient id={id} cx="0.5" cy="0.7" r="0.55">
+                <stop offset="0%"   stopColor="var(--color-bg)" />
+                <stop offset="55%"  stopColor="var(--color-accent)" />
+                <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
               </radialGradient>
             </defs>
-            <path d="M10 2 C 15 10, 16 20, 10 28 C 4 20, 5 10, 10 2 Z" fill={`url(#flame-${label})`} />
+            <path d="M10 2 C 15 10, 16 20, 10 28 C 4 20, 5 10, 10 2 Z" fill={`url(#${id})`} />
           </svg>
         </motion.div>
-        <motion.div
-          animate={{ opacity: active ? 0.8 : 0.3 }}
-          className="absolute left-1/2 -translate-x-1/2 rounded-full bg-[#f9b572] blur-2xl pointer-events-none"
-          style={{ width: flameW * 4, height: flameH * 3, top: -10 }}
-        />
+        {/* body */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 rounded-sm bg-gradient-to-b from-[#f8e4ad] to-[#d4b97c] border border-[#b59664]"
-          style={{ width: flameW - 2, height: bodyH, top: flameH + 6 }}
+          className="absolute left-1/2 -translate-x-1/2 bg-bg border-2 border-bg/80"
+          style={{ width: bodyW, height: bodyH, top: flameH + 6 }}
+          aria-hidden="true"
+        />
+        {/* wick stub */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 bg-bg"
+          style={{ width: 2, height: 4, top: flameH + 4 }}
+          aria-hidden="true"
         />
       </div>
-      <span className={`font-serif text-base ${active ? 'text-paper' : 'text-paper/70'}`}>{label}</span>
+      <span className={`font-mono text-xs tracking-[0.18em] uppercase font-medium ${active ? 'text-bg' : 'text-bg/85'}`}>
+        {label}
+      </span>
     </button>
   );
 }

@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Casa de Flor — Redesign mockup (Brutalist + magenta)</title>
+<style>
+  :root {
+    --bg:      oklch(96% 0.004 100);    /* off-white printer paper */
+    --surface: oklch(100% 0 0);
+    --fg:      oklch(15% 0.02 100);
+    --muted:   oklch(40% 0.02 100);
+    --border:  oklch(15% 0.02 100);
+    --accent:  oklch(62% 0.25 345);      /* Schiaparelli magenta */
+    --accent-weak: oklch(62% 0.25 345 / 0.12);
+    --night:   oklch(18% 0.04 300);     /* night-mode for cuarto 6 */
+
+    --font-display: "Times New Roman", "Iowan Old Style", Georgia, serif;
+    --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono:    ui-monospace, "IBM Plex Mono", "JetBrains Mono", Menlo, monospace;
+    --font-hand:    "Caveat", "Snell Roundhand", cursive;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: var(--font-body); color: var(--fg); }
+  body { background: #0e0e0e; padding: 32px 20px 80px; }
+
+  /* ---- meta header (talking to Danilo, not in the product) ---- */
+  .meta { max-width: 1280px; margin: 0 auto 36px; color: #e8e8e8; }
+  .meta h1 { font: 400 28px/1.15 var(--font-display); letter-spacing: -0.015em; color: #fff; }
+  .meta p { margin-top: 12px; max-width: 760px; color: #bfbfbf; font-size: 14.5px; line-height: 1.55; }
+  .meta p b { color: var(--accent); }
+  .meta p code { font: 12.5px/1 var(--font-mono); background: #1f1f1f; padding: 2px 6px; border-radius: 3px; }
+  .meta .palette { margin-top: 18px; display: flex; gap: 1px; max-width: 600px; border: 1px solid #2a2a2a; }
+  .meta .palette div { flex: 1; height: 32px; }
+  .meta .palette-labels { display: flex; gap: 1px; max-width: 600px; margin-top: 4px; }
+  .meta .palette-labels span { flex: 1; font: 10px/1 var(--font-mono); color: #888; text-align: center; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ---- screen grid ---- */
+  .screens { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px 32px; }
+  .screen { }
+  .screen .label {
+    font: 500 11px/1 var(--font-mono);
+    color: #888;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .screen .label .num { color: var(--accent); }
+  .screen .label .dim { color: #666; font-size: 10px; }
+
+  /* ipad frame */
+  .ipad {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: #222;
+    border-radius: 22px;
+    padding: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .ipad::before {
+    content: ""; position: absolute; top: 50%; left: 4px; width: 4px; height: 48px; background: #444; border-radius: 2px; transform: translateY(-50%);
+  }
+  .ipad .glass { width: 100%; height: 100%; background: var(--bg); border-radius: 8px; overflow: hidden; position: relative; color: var(--fg); font-family: var(--font-body); }
+
+  /* ============================================================ */
+  /* 1 — PUERTA / Intro                                           */
+  /* ============================================================ */
+  .s-puerta { }
+  .s-puerta .glass {
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 36px;
+    background:
+      radial-gradient(ellipse at 78% 16%, color-mix(in oklch, var(--accent) 36%, transparent) 0%, transparent 52%),
+      var(--bg);
+  }
+  .s-puerta .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .s-puerta .kicker { font: 500 10px/1 var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .s-puerta .date   { font: 500 10px/1 var(--font-mono); letter-spacing: 0.14em; color: var(--muted); }
+  .s-puerta h1 {
+    font: 400 clamp(48px, 7.5vw, 84px)/0.92 var(--font-display);
+    letter-spacing: -0.025em;
+    max-width: 85%;
+  }
+  .s-puerta h1 em { color: var(--accent); font-style: italic; }
+  .s-puerta .bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+  .s-puerta .by { font: 12px/1.4 var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; max-width: 200px; }
+  .s-puerta .cta {
+    appearance: none; border: 0;
+    background: var(--accent); color: var(--bg);
+    font: 500 14px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 18px 26px 18px 28px;
+    display: inline-flex; align-items: center; gap: 10px;
+    cursor: pointer;
+  }
+  .s-puerta .cta .arrow { font-family: var(--font-display); font-size: 22px; line-height: 0; position: relative; top: -1px; }
+
+  /* ============================================================ */
+  /* 2 — HOUSE MAP                                                */
+  /* ============================================================ */
+  .s-map .glass {
+    display: grid; grid-template-rows: auto 1fr;
+    padding: 0;
+  }
+  .s-map header {
+    padding: 24px 28px 18px;
+    border-bottom: 2px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .s-map header h2 { font: 400 32px/1 var(--font-display); letter-spacing: -0.02em; }
+  .s-map header h2 em { color: var(--accent); font-style: italic; }
+  .s-map header .crumb { font: 11px/1 var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .s-map .rooms {
+    padding: 18px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    align-content: start;
+  }
+  .s-map .room {
+    border: 2px solid var(--border);
+    background: var(--surface);
+    padding: 12px 14px 14px;
+    position: relative;
+    min-height: 84px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform 0.15s;
+  }
+  .s-map .room .n  { font: 500 9px/1 var(--font-mono); letter-spacing: 0.14em; color: var(--muted); }
+  .s-map .room h3  { font: 400 18px/1.05 var(--font-display); letter-spacing: -0.01em; margin-top: 6px; }
+  .s-map .room .sub{ font: 10.5px/1.3 var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+  .s-map .room.visited { background: var(--bg); }
+  .s-map .room.visited::after {
+    content: "✓"; position: absolute; top: 8px; right: 10px;
+    font: 400 12px/1 var(--font-display); color: var(--accent);
+  }
+  .s-map .room.buzon {
+    background: var(--fg); color: var(--bg);
+    grid-column: span 3;
+    min-height: 72px;
+    display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+  }
+  .s-map .room.buzon h3 { color: var(--bg); }
+  .s-map .room.buzon .n { color: var(--accent); }
+  .s-map .room.buzon .arrow { font: 400 32px/0.5 var(--font-display); color: var(--accent); }
+  .s-map .room.night {
+    background: var(--night); color: var(--bg); border-color: var(--night);
+  }
+  .s-map .room.night h3 { color: var(--bg); }
+  .s-map .room.night .n { color: var(--accent); }
+
+  /* ============================================================ */
+  /* 3 — PASAJE                                                   */
+  /* ============================================================ */
+  .s-pasaje .glass { padding: 0; display: grid; grid-template-columns: 38% 1fr; }
+  .s-pasaje .side {
+    padding: 26px 22px; border-right: 2px solid var(--border);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .s-pasaje .side .top { }
+  .s-pasaje .side .n { font: 500 10px/1 var(--font-mono); color: var(--muted); letter-spacing: 0.14em; }
+  .s-pasaje .side h2 { font: 400 34px/0.96 var(--font-display); letter-spacing: -0.025em; margin-top: 12px; }
+  .s-pasaje .side h2 em { color: var(--accent); font-style: italic; }
+  .s-pasaje .side .quote {
+    margin-top: 18px;
+    font: 14px/1.45 var(--font-body);
+    color: var(--fg);
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+  }
+  .s-pasaje .side .meta {
+    font: 10px/1 var(--font-mono);
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+  .s-pasaje .photo {
+    background:
+      radial-gradient(ellipse at 35% 65%, rgba(255,180,100,0.5), transparent 50%),
+      linear-gradient(160deg, #f2b27a 0%, #d47a4c 45%, #873a26 100%);
+    position: relative;
+  }
+  .s-pasaje .photo::after {
+    content: "PASAJE · EL ORO";
+    position: absolute; bottom: 14px; left: 14px;
+    font: 500 10px/1 var(--font-mono); letter-spacing: 0.22em; color: rgba(255,255,255,0.85);
+  }
+  .s-pasaje .photo .stand-in {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font: italic 400 72px/0.9 var(--font-display); color: rgba(255,255,255,0.22); letter-spacing: -0.025em;
+  }
+
+  /* ============================================================ */
+  /* 4 — COCINA                                                   */
+  /* ============================================================ */
+  .s-cocina .glass { padding: 0; }
+  .s-cocina header {
+    padding: 20px 28px 14px; border-bottom: 2px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .s-cocina header h2 { font: 400 26px/1 var(--font-display); letter-spacing: -0.015em; }
+  .s-cocina header .crumb { font: 11px/1 var(--font-mono); letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
+  .s-cocina .instruction { padding: 12px 28px; font: 12px/1.4 var(--font-mono); color: var(--muted); letter-spacing: 0.04em; border-bottom: 1px solid var(--border); }
+  .s-cocina .grid { padding: 18px 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .s-cocina .obj {
+    aspect-ratio: 1;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .s-cocina .obj svg { width: 40%; color: var(--fg); }
+  .s-cocina .obj .lbl { font: 500 9px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .s-cocina .obj.bridge { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .s-cocina .obj.bridge svg { color: var(--bg); }
+  .s-cocina .obj.bridge .lbl { color: var(--bg); }
+  .s-cocina .obj::before {
+    content: ""; position: absolute; inset: 4px; border: 1px dashed color-mix(in oklch, var(--border) 30%, transparent);
+    pointer-events: none;
+  }
+  .s-cocina .bridge-note {
+    margin: 0 20px 18px; padding: 12px 14px;
+    border-left: 2px solid var(--accent);
+    font: 12px/1.45 var(--font-body);
+    color: var(--fg); background: var(--accent-weak);
+  }
+  .s-cocina .bridge-note b { font-family: var(--font-display); font-weight: 400; font-style: italic; color: var(--accent); }
+
+  /* ============================================================ */
+  /* 5 — BUZÓN / CARTA                                            */
+  /* ============================================================ */
+  .s-carta .glass { padding: 0; display: grid; grid-template-columns: 36% 1fr; }
+  .s-carta aside { padding: 24px 20px; border-right: 2px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; }
+  .s-carta aside .n { font: 500 10px/1 var(--font-mono); color: var(--muted); letter-spacing: 0.14em; }
+  .s-carta aside h2 { font: 400 28px/0.98 var(--font-display); letter-spacing: -0.02em; margin-top: 10px; }
+  .s-carta aside h2 em { color: var(--accent); font-style: italic; }
+  .s-carta aside .audio {
+    margin-top: 16px; padding: 10px 12px; border: 2px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .s-carta aside .audio .play {
+    width: 28px; height: 28px; background: var(--accent); color: var(--bg);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font: 12px/0 var(--font-mono); padding-left: 2px;
+  }
+  .s-carta aside .audio .meta { font: 10px/1.3 var(--font-mono); letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+  .s-carta aside .audio .waveform { flex: 1; display: flex; align-items: center; gap: 2px; height: 24px; }
+  .s-carta aside .audio .waveform i { display: block; flex: 1; background: var(--border); }
+  .s-carta aside .audio .waveform i:nth-child(1)  { height: 30%; background: var(--accent); }
+  .s-carta aside .audio .waveform i:nth-child(2)  { height: 60%; background: var(--accent); }
+  .s-carta aside .audio .waveform i:nth-child(3)  { height: 45%; background: var(--accent); }
+  .s-carta aside .audio .waveform i:nth-child(4)  { height: 80%; }
+  .s-carta aside .audio .waveform i:nth-child(5)  { height: 55%; }
+  .s-carta aside .audio .waveform i:nth-child(6)  { height: 70%; }
+  .s-carta aside .audio .waveform i:nth-child(7)  { height: 40%; }
+  .s-carta aside .audio .waveform i:nth-child(8)  { height: 65%; }
+  .s-carta aside .audio .waveform i:nth-child(9)  { height: 35%; }
+  .s-carta aside .audio .waveform i:nth-child(10) { height: 50%; }
+  .s-carta aside .audio .waveform i:nth-child(11) { height: 75%; }
+  .s-carta aside .audio .waveform i:nth-child(12) { height: 45%; }
+  .s-carta aside .footer { font: 10px/1.4 var(--font-mono); color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .s-carta .letter {
+    background: var(--surface);
+    padding: 28px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-carta .letter::before {
+    content: ""; position: absolute; top: 14px; right: 14px;
+    width: 18px; height: 18px; background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { transform: scale(0.85); opacity: 0.7; } }
+  .s-carta .letter .salute { font: 400 24px/1 var(--font-display); font-style: italic; }
+  .s-carta .letter p {
+    margin-top: 10px;
+    font: 13px/1.5 var(--font-body);
+    color: var(--fg);
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+  .s-carta .letter p.current {
+    color: var(--fg);
+    border-left: 2px solid var(--accent);
+    padding-left: 10px;
+    margin-left: -12px;
+  }
+  .s-carta .letter p.past { color: var(--muted); }
+  .s-carta .letter p.future { color: oklch(80% 0.005 100); }
+
+  /* ============================================================ */
+  /* 6 — CUPÓN                                                    */
+  /* ============================================================ */
+  .s-cupon .glass {
+    padding: 28px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px;
+    background:
+      repeating-linear-gradient(90deg, transparent 0, transparent 30px, color-mix(in oklch, var(--border) 8%, transparent) 30px, color-mix(in oklch, var(--border) 8%, transparent) 31px),
+      var(--bg);
+  }
+  .coupon {
+    width: 82%;
+    max-width: 520px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    padding: 26px 28px;
+    position: relative;
+  }
+  .coupon::before,
+  .coupon::after {
+    content: ""; position: absolute; top: 50%; width: 16px; height: 16px;
+    background: var(--bg); border: 2px solid var(--border); border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  .coupon::before { left: -10px; }
+  .coupon::after  { right: -10px; }
+  .coupon .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 10px;
+  }
+  .coupon .num { font: 500 10px/1 var(--font-mono); color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; }
+  .coupon .for { font: 400 16px/1 var(--font-hand); color: var(--fg); }
+  .coupon h3 { font: 400 34px/1 var(--font-display); letter-spacing: -0.02em; margin-top: 14px; }
+  .coupon h3 em { color: var(--accent); font-style: italic; }
+  .coupon .subtitle { font: italic 14px/1.3 var(--font-display); color: var(--muted); margin-top: 4px; }
+  .coupon .body { font: 13px/1.5 var(--font-body); margin-top: 12px; }
+  .coupon .stamp {
+    position: absolute; top: 8px; right: 16px;
+    border: 2px solid var(--accent); color: var(--accent);
+    font: 500 9px/1 var(--font-mono); letter-spacing: 0.18em;
+    padding: 4px 8px;
+    transform: rotate(-8deg);
+  }
+  .coupon .row {
+    margin-top: 16px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-top: 10px; border-top: 1px dashed var(--border);
+  }
+  .coupon .row .sig { font: 400 24px/1 var(--font-hand); color: var(--fg); }
+  .coupon .cta-mini {
+    font: 500 11px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 8px 14px; background: var(--fg); color: var(--bg);
+  }
+  .coupon-meta { font: 10px/1 var(--font-mono); color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; margin-top: 6px; }
+
+  /* ---- global chrome (appears on all non-intro screens) ---- */
+  .chrome-back {
+    position: absolute; top: 14px; left: 14px;
+    font: 500 10px/1 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 8px 12px;
+    border: 2px solid var(--border); background: var(--bg); color: var(--fg);
+    z-index: 5;
+  }
+  .chrome-audio {
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px; border: 2px solid var(--border); background: var(--bg);
+    display: grid; place-items: center;
+    font: 13px/0 var(--font-body);
+    z-index: 5;
+  }
+
+  /* quick footer */
+  .end {
+    max-width: 1280px; margin: 48px auto 0; color: #aaa; font: 13px/1.6 var(--font-body);
+    border-top: 1px solid #2a2a2a; padding-top: 24px;
+  }
+  .end b { color: #fff; }
+  .end ul { margin: 10px 0 0 20px; }
+  .end li { margin-top: 4px; }
+  .end code { font: 12px/1 var(--font-mono); background: #1f1f1f; padding: 2px 5px; border-radius: 3px; color: #ddd; }
+
+</style>
+</head>
+<body>
+
+<div class="meta">
+  <h1>Rediseño — Brutalist / Are.na + <b>magenta Schiaparelli</b></h1>
+  <p>
+    6 pantallas críticas de la Casa de Flor, aplicando la dirección visual. <b>Ajuste justificado frente al brutalist puro:</b>
+    sans del sistema para cuerpos largos (la carta, las memorias). Mono solo para kickers/metadatos/nav. Serif
+    <code>Times New Roman</code> para todos los títulos. Mantengo las otras reglas posture: bordes <code>var(--fg)</code> a 2px,
+    radius 0, sin sombras, asimetría (split 38/62 en cuartos, serif sobredimensionado en hero).
+  </p>
+  <p>
+    Acento: <b>oklch(62% 0.25 345)</b> — magenta saturado, usado en acentos editoriales (una palabra del título en itálica), CTAs, cupones,
+    ventana de oración y pulsos. <b>Tope duro: 2 usos por pantalla.</b>
+  </p>
+  <div class="palette">
+    <div style="background: oklch(96% 0.004 100)"></div>
+    <div style="background: oklch(100% 0 0)"></div>
+    <div style="background: oklch(15% 0.02 100)"></div>
+    <div style="background: oklch(40% 0.02 100)"></div>
+    <div style="background: oklch(18% 0.04 300)"></div>
+    <div style="background: oklch(62% 0.25 345)"></div>
+  </div>
+  <div class="palette-labels">
+    <span>bg</span><span>surface</span><span>fg/border</span><span>muted</span><span>night</span><span>accent</span>
+  </div>
+</div>
+
+<div class="screens">
+
+  <!-- 1. PUERTA -->
+  <div class="screen s-puerta">
+    <div class="label"><span><span class="num">01</span> · PUERTA / INTRO</span><span class="dim">iPad 4:3</span></div>
+    <div class="ipad"><div class="glass">
+      <div class="top">
+        <span class="kicker">Un regalo · 10 · Mayo · 2026</span>
+        <span class="date">DE DANILO · PARA FLOR</span>
+      </div>
+      <h1>Flor,<br>hoy te toca<br><em>recibir</em>.</h1>
+      <div class="bottom">
+        <p class="by">Un lugar para ti, hecho a mano por tu hijo. Siete cuartos. Una carta. Todo tuyo.</p>
+        <button class="cta">Empezar <span class="arrow">→</span></button>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 2. HOUSE MAP -->
+  <div class="screen s-map">
+    <div class="label"><span><span class="num">02</span> · PLANO DE LA CASA</span><span class="dim">después de entrar por la puerta</span></div>
+    <div class="ipad"><div class="glass">
+      <span class="chrome-audio">♪</span>
+      <header>
+        <h2>La casa de <em>Flor</em></h2>
+        <span class="crumb">Toca un cuarto</span>
+      </header>
+      <div class="rooms">
+        <div class="room visited"><span class="n">02 · Pasaje</span><h3>Pasaje</h3><span class="sub">Donde empezó</span></div>
+        <div class="room visited"><span class="n">03 · Cocina</span><h3>La cocina</h3><span class="sub">El cuarto donde se vivía</span></div>
+        <div class="room"><span class="n">04 · Patio</span><h3>El patio</h3><span class="sub">Fido, Lila, jardín</span></div>
+        <div class="room"><span class="n">05 · Música</span><h3>Sala de música</h3><span class="sub">Pasillos, chichera</span></div>
+        <div class="room night"><span class="n">06 · Los que siguen</span><h3>Los que siguen</h3><span class="sub">Una ventana al cielo</span></div>
+        <div class="room"><span class="n">07 · Buzón</span><h3>El buzón</h3><span class="sub">Un sobre con tu nombre</span></div>
+        <div class="room buzon" style="display:none"><span></span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 3. PASAJE -->
+  <div class="screen s-pasaje">
+    <div class="label"><span><span class="num">03</span> · CUARTO TÍPICO (Pasaje)</span><span class="dim">layout split 38/62</span></div>
+    <div class="ipad"><div class="glass">
+      <span class="chrome-back">← La casa</span>
+      <span class="chrome-audio">♪</span>
+      <div class="side">
+        <div class="top">
+          <span class="n">CUARTO 02</span>
+          <h2>Donde<br>empezó tu<br><em>forma de querer</em>.</h2>
+          <p class="quote">Cada vez que nos cuidas, la costa de El Oro vuelve a casa con nosotros.</p>
+        </div>
+        <span class="meta">Pasaje · El Oro · Ecuador</span>
+      </div>
+      <div class="photo"><div class="stand-in">Pasaje</div></div>
+    </div></div>
+  </div>
+
+  <!-- 4. COCINA -->
+  <div class="screen s-cocina">
+    <div class="label"><span><span class="num">04</span> · COCINA (5 memorias + puente)</span><span class="dim">grid 5 objetos, 1 es el puente</span></div>
+    <div class="ipad"><div class="glass">
+      <span class="chrome-back">← La casa</span>
+      <span class="chrome-audio">♪</span>
+      <header>
+        <h2>La <em>cocina</em></h2>
+        <span class="crumb">03 · El cuarto donde se vivía</span>
+      </header>
+      <div class="instruction">// toca cada cosa. detrás de cada una hay una memoria.</div>
+      <div class="grid">
+        <div class="obj">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18l-2 10H5L3 9z"/><path d="M6 9V7h12v2"/></svg>
+          <span class="lbl">Olla</span>
+        </div>
+        <div class="obj">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10h18"/><path d="M6 10v10M18 10v10M3 6h18l-1.5 4H4.5L3 6z"/></svg>
+          <span class="lbl">Mesa</span>
+        </div>
+        <div class="obj">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h20l-3 12H5L2 8z"/><path d="M5 8V6h14v2"/><path d="M10 13q2 1 4 0"/></svg>
+          <span class="lbl">Olla grande</span>
+        </div>
+        <div class="obj">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="0"/><path d="M12 4v16M4 12h16"/></svg>
+          <span class="lbl">Ventana</span>
+        </div>
+        <div class="obj bridge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 14h14"/><path d="M7 14l2-8h6l2 8"/><path d="M4 18q8 3 16 0"/></svg>
+          <span class="lbl">Mecedora</span>
+        </div>
+      </div>
+      <div class="bridge-note">
+        <b>Puente.</b> Este objeto lleva al cuarto donde papá sigue contigo. Entra cuando quieras.
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 5. CARTA -->
+  <div class="screen s-carta">
+    <div class="label"><span><span class="num">05</span> · CARTA (buzón) — línea en curso sincronizada con audio</span><span class="dim">sin sombras, subrayado izq en accent</span></div>
+    <div class="ipad"><div class="glass">
+      <span class="chrome-back">← La casa</span>
+      <span class="chrome-audio">♪</span>
+      <aside>
+        <div>
+          <span class="n">CUARTO 07</span>
+          <h2>Una carta para <em>Flor</em>.</h2>
+          <div class="audio">
+            <span class="play">▶</span>
+            <div class="waveform"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="meta">1:42</span>
+          </div>
+        </div>
+        <span class="footer">Voz · Danilo · 2026</span>
+      </aside>
+      <div class="letter">
+        <p class="salute">Flor,</p>
+        <p class="past">Este regalo no alcanza para decir todo lo que tengo que decirte, pero es un comienzo.</p>
+        <p class="past">Durante muchos años vi tus cuidados como si fueran parte normal de la vida. La comida lista, la ropa limpia, tu forma de estar pendiente.</p>
+        <p class="current">Hoy entiendo que nada de eso era automático. Todo eso eras tú. Tu amor. Tu fuerza. Tu manera de sostenernos.</p>
+        <p class="future">Yo no siempre he sabido cuidarte como tú me cuidaste…</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- 6. CUPÓN -->
+  <div class="screen s-cupon">
+    <div class="label"><span><span class="num">06</span> · CUPÓN (detalle expandido)</span><span class="dim">ticket editorial, firma a mano</span></div>
+    <div class="ipad"><div class="glass">
+      <span class="chrome-back">← La casa</span>
+      <span class="chrome-audio">♪</span>
+      <div class="coupon">
+        <span class="stamp">Cupón 02 · de 03</span>
+        <div class="top">
+          <span class="num">Canjeable cuando tú quieras</span>
+          <span class="for">para Flor</span>
+        </div>
+        <h3>Un <em>viaje</em> a donde tú quieras.</h3>
+        <p class="subtitle">Tú decides el destino.</p>
+        <p class="body">Tú escoges el lugar. Yo me encargo de ayudarte a llegar. Sin fecha límite, sin letra chica.</p>
+        <div class="row">
+          <span class="sig">— Danilo</span>
+          <span class="cta-mini">Guardar cupón</span>
+        </div>
+      </div>
+      <span class="coupon-meta">03 cupones · Masaje · Viaje · $1,000 sin explicar</span>
+    </div></div>
+  </div>
+
+</div>
+
+<div class="end">
+  <p><b>Checklist P0 que voy a respetar al implementar</b> (viene del <code>web-prototype/references/checklist.md</code> de OD):</p>
+  <ul>
+    <li>Ningún hex crudo fuera del bloque <code>:root</code>. Todo pasa por <code>var(--bg)</code> / <code>--fg</code> / <code>--accent</code>, o por <code>color-mix()</code>.</li>
+    <li>Todos los headings usan <code>var(--font-display)</code> (Times). Sans nunca como display.</li>
+    <li>El acento aparece máximo 2 veces por pantalla.</li>
+    <li>Sin gradientes violeta/AI-slop. Sin emojis como iconos (ya los saqué de la cocina — ahora son SVG monoline).</li>
+    <li>Sin métricas inventadas. Sin "Feature One".</li>
+  </ul>
+  <p style="margin-top:14px;"><b>Qué va a cambiar en el repo:</b> reescribo <code>globals.css</code> con los nuevos tokens, reemplazo la Puerta, el Plano (HouseMap), el RoomLayout, la Cocina (KitchenScene con SVG y bridge-note editorial), el Buzón (Envelope + Letter + CouponCard). El AudioEngine y el store no los toco — son lógica, no presentación. Framer Motion se queda pero con menos cosas moviéndose: una entrada por cuarto, el pulso del círculo de la carta, y ya.</p>
+</div>
+
+</body>
+</html>

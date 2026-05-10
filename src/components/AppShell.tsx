@@ -21,7 +21,7 @@ export function AppShell({ currentRoomSlug = null, showBack = true, duck = false
   return (
     <div
       className={`min-h-screen w-full transition-colors duration-700 ${
-        isNight ? 'bg-night text-paper' : 'bg-background text-deep-brown'
+        isNight ? 'bg-night text-bg' : 'bg-bg text-fg'
       }`}
     >
       <AudioEngine currentRoomSlug={currentRoomSlug} enabled={enabled} duck={duck} />

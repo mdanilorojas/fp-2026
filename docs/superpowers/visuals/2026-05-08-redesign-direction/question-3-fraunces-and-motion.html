@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Casa de Flor — Fraunces + movimiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      oklch(96% 0.004 100);
+    --surface: oklch(100% 0 0);
+    --fg:      oklch(15% 0.02 100);
+    --muted:   oklch(40% 0.02 100);
+    --border:  oklch(15% 0.02 100);
+    --accent:  oklch(62% 0.25 345);
+    --accent-weak: oklch(62% 0.25 345 / 0.14);
+    --night:   oklch(18% 0.04 300);
+
+    --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-mono:    ui-monospace, "IBM Plex Mono", "JetBrains Mono", Menlo, monospace;
+    --font-hand:    "Caveat", cursive;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e0e0e; color: #e8e8e8; font-family: var(--font-body); padding: 32px 20px 80px; }
+
+  .meta { max-width: 1280px; margin: 0 auto 36px; }
+  .meta h1 { font: 500 34px/1.1 var(--font-display); font-variation-settings: "SOFT" 50, "opsz" 120; letter-spacing: -0.02em; color: #fff; }
+  .meta h1 em { color: var(--accent); font-style: italic; }
+  .meta p { margin-top: 12px; max-width: 760px; color: #bfbfbf; font-size: 14.5px; line-height: 1.55; }
+  .meta p b { color: var(--accent); }
+  .meta p code { font: 12.5px/1 var(--font-mono); background: #1f1f1f; padding: 2px 6px; border-radius: 3px; }
+
+  /* sample of Fraunces at different settings */
+  .type-sample {
+    margin: 22px 0 0; padding: 20px; background: var(--bg); color: var(--fg); border-radius: 6px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .type-sample h2 { font: 600 48px/1 var(--font-display); font-variation-settings: "SOFT" 100, "opsz" 144, "WONK" 1; letter-spacing: -0.025em; }
+  .type-sample h2 em { color: var(--accent); font-style: italic; }
+  .type-sample .vs h3 { font: 500 15px/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .type-sample .vs.after h3 { color: var(--accent); }
+  .type-sample .vs.before h2 { font-family: "Times New Roman", Georgia, serif; font-variation-settings: normal; letter-spacing: -0.015em; }
+
+  .section-label {
+    max-width: 1280px; margin: 48px auto 14px;
+    font: 500 11px/1 var(--font-mono); letter-spacing: 0.16em; text-transform: uppercase; color: #888;
+  }
+  .section-label b { color: var(--accent); }
+
+  /* ============================================================ */
+  /*  HOUSE MAP — with animated SVGs per room                     */
+  /* ============================================================ */
+  .ipad-wide {
+    max-width: 1280px; margin: 0 auto;
+    background: #222; border-radius: 22px; padding: 16px;
+    aspect-ratio: 4/3; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .ipad-wide .glass { width: 100%; height: 100%; background: var(--bg); border-radius: 8px; overflow: hidden; position: relative; color: var(--fg); display: grid; grid-template-rows: auto 1fr; }
+
+  .map-top {
+    padding: 28px 36px 20px; border-bottom: 2px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .map-top h2 { font: 500 54px/0.95 var(--font-display); font-variation-settings: "SOFT" 80, "opsz" 144, "WONK" 1; letter-spacing: -0.03em; }
+  .map-top h2 em { color: var(--accent); font-style: italic; }
+  .map-top .aside { text-align: right; }
+  .map-top .aside .line1 { font: italic 500 16px/1.1 var(--font-display); color: var(--muted); }
+  .map-top .aside .line2 { font: 11px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+
+  .rooms-grid {
+    padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    align-content: start;
+  }
+  .room-card {
+    position: relative;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    cursor: pointer;
+  }
+  .room-card:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 0 var(--fg); transition: all 0.15s; }
+  .room-card .art {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .room-card .art svg { width: 68%; height: 68%; }
+  .room-card .label {
+    position: relative; z-index: 2;
+    background: var(--surface);
+    border-top: 2px solid var(--border);
+    padding: 10px 14px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .room-card .label .n { font: 500 10px/1 var(--font-mono); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+  .room-card .label .name { font: 500 16px/1 var(--font-display); font-variation-settings: "opsz" 24, "SOFT" 50; letter-spacing: -0.005em; }
+  .room-card .label .name em { color: var(--accent); font-style: italic; }
+  .room-card.visited .label::after {
+    content: "✓"; color: var(--accent); font: 400 14px/1 var(--font-display); margin-left: auto;
+  }
+  .room-card.night { background: var(--night); color: var(--bg); border-color: var(--night); }
+  .room-card.night .label { background: var(--night); color: var(--bg); border-color: var(--night); }
+  .room-card.night .label .n { color: color-mix(in oklch, var(--bg) 60%, transparent); }
+  .room-card.buzon {
+    grid-column: span 3;
+    aspect-ratio: auto; min-height: 90px;
+    background: var(--fg); color: var(--bg); border-color: var(--fg);
+    flex-direction: row; align-items: center;
+  }
+  .room-card.buzon .art { position: static; flex: 0 0 120px; }
+  .room-card.buzon .art svg { width: 80px; height: 60px; }
+  .room-card.buzon .text { flex: 1; padding: 16px 20px; }
+  .room-card.buzon .text .n { font: 500 10px/1 var(--font-mono); letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; }
+  .room-card.buzon .text h3 { font: 500 24px/1 var(--font-display); font-variation-settings: "opsz" 48, "SOFT" 80; letter-spacing: -0.01em; margin-top: 4px; }
+  .room-card.buzon .text .sub { font: italic 13px/1.2 var(--font-display); color: color-mix(in oklch, var(--bg) 70%, transparent); margin-top: 2px; }
+  .room-card.buzon .arrow { font: 500 48px/0.4 var(--font-display); color: var(--accent); padding-right: 24px; }
+
+  /* ============================================================ */
+  /*  ANIMATED SVGs per room                                       */
+  /* ============================================================ */
+
+  /* Puerta — sun rising with pulsing rays */
+  .svg-puerta .sun { fill: var(--accent); }
+  .svg-puerta .ray { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; transform-origin: 50px 50px; animation: raypulse 3.5s ease-in-out infinite; }
+  .svg-puerta .ray:nth-child(1) { animation-delay: 0s; }
+  .svg-puerta .ray:nth-child(2) { animation-delay: 0.4s; }
+  .svg-puerta .ray:nth-child(3) { animation-delay: 0.8s; }
+  .svg-puerta .ray:nth-child(4) { animation-delay: 1.2s; }
+  .svg-puerta .ray:nth-child(5) { animation-delay: 1.6s; }
+  .svg-puerta .ray:nth-child(6) { animation-delay: 2.0s; }
+  .svg-puerta .ray:nth-child(7) { animation-delay: 2.4s; }
+  .svg-puerta .ray:nth-child(8) { animation-delay: 2.8s; }
+  @keyframes raypulse { 0%, 70%, 100% { opacity: 0.25; } 35% { opacity: 1; } }
+
+  /* Pasaje — ocean waves rolling */
+  .svg-pasaje .wave { fill: none; stroke: var(--fg); stroke-width: 1.8; stroke-linecap: round; }
+  .svg-pasaje .w1 { animation: waveroll 4s ease-in-out infinite; }
+  .svg-pasaje .w2 { animation: waveroll 4s ease-in-out infinite -1.3s; }
+  .svg-pasaje .w3 { animation: waveroll 4s ease-in-out infinite -2.6s; }
+  .svg-pasaje .sun2 { fill: var(--accent); opacity: 0.9; }
+  @keyframes waveroll {
+    0%   { transform: translateX(-8px); }
+    50%  { transform: translateX(8px); }
+    100% { transform: translateX(-8px); }
+  }
+
+  /* Cocina — pot with rising steam */
+  .svg-cocina .pot { fill: var(--surface); stroke: var(--fg); stroke-width: 2; stroke-linejoin: round; }
+  .svg-cocina .steam { fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; }
+  .svg-cocina .s1 { animation: steam 3s ease-in-out infinite; }
+  .svg-cocina .s2 { animation: steam 3s ease-in-out infinite -1s; }
+  .svg-cocina .s3 { animation: steam 3s ease-in-out infinite -2s; }
+  .svg-cocina .heart { fill: var(--accent); opacity: 0; animation: heartrise 6s ease-out infinite; }
+  @keyframes steam {
+    0%   { transform: translateY(0) scaleY(0.6); opacity: 0; }
+    20%  { opacity: 1; }
+    100% { transform: translateY(-18px) scaleY(1.2); opacity: 0; }
+  }
+  @keyframes heartrise {
+    0%, 60%   { transform: translateY(0); opacity: 0; }
+    70%  { opacity: 1; }
+    100% { transform: translateY(-30px); opacity: 0; }
+  }
+
+  /* Patio — blooming flower + falling leaf */
+  .svg-patio .petal { fill: var(--accent); transform-origin: 50px 50px; animation: bloom 4s ease-in-out infinite; }
+  .svg-patio .petal:nth-child(1) { animation-delay: 0s; }
+  .svg-patio .petal:nth-child(2) { animation-delay: 0.1s; }
+  .svg-patio .petal:nth-child(3) { animation-delay: 0.2s; }
+  .svg-patio .petal:nth-child(4) { animation-delay: 0.3s; }
+  .svg-patio .petal:nth-child(5) { animation-delay: 0.4s; }
+  .svg-patio .center { fill: var(--fg); }
+  .svg-patio .stem { stroke: var(--fg); stroke-width: 2; fill: none; stroke-linecap: round; }
+  .svg-patio .leaf { fill: var(--fg); animation: leaffall 5s ease-in-out infinite; }
+  @keyframes bloom {
+    0%, 100% { transform: scale(0.85) rotate(0deg); }
+    50%      { transform: scale(1.06) rotate(6deg); }
+  }
+  @keyframes leaffall {
+    0%   { transform: translate(0, -4px) rotate(0deg); opacity: 0; }
+    15%  { opacity: 1; }
+    100% { transform: translate(-6px, 22px) rotate(-40deg); opacity: 0; }
+  }
+
+  /* Música — spinning record with notes */
+  .svg-musica .record { fill: var(--fg); transform-origin: 50px 50px; animation: spin 6s linear infinite; }
+  .svg-musica .groove { fill: none; stroke: var(--bg); stroke-width: 0.6; opacity: 0.45; }
+  .svg-musica .label2 { fill: var(--accent); }
+  .svg-musica .spindle { fill: var(--bg); }
+  .svg-musica .note { fill: var(--accent); font: italic 700 18px/1 var(--font-display); }
+  .svg-musica .n1 { animation: noteup 3s ease-out infinite; }
+  .svg-musica .n2 { animation: noteup 3s ease-out infinite -1s; }
+  .svg-musica .n3 { animation: noteup 3s ease-out infinite -2s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes noteup {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    20%  { opacity: 1; }
+    100% { transform: translate(-10px, -24px); opacity: 0; }
+  }
+
+  /* Familia (noche) — twinkling stars + moon */
+  .svg-familia .moon { fill: var(--accent); }
+  .svg-familia .star { fill: var(--bg); animation: twinkle 3s ease-in-out infinite; }
+  .svg-familia .star:nth-child(2) { animation-delay: 0.5s; }
+  .svg-familia .star:nth-child(3) { animation-delay: 1s; }
+  .svg-familia .star:nth-child(4) { animation-delay: 1.5s; }
+  .svg-familia .star:nth-child(5) { animation-delay: 2s; }
+  .svg-familia .star:nth-child(6) { animation-delay: 2.5s; }
+  .svg-familia .window-frame { stroke: var(--bg); stroke-width: 1.5; fill: none; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.9); }
+    50%      { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* Buzón — envelope with drawing ink line */
+  .svg-buzon .envelope { fill: var(--surface); stroke: var(--bg); stroke-width: 2; stroke-linejoin: round; }
+  .svg-buzon .flap { fill: color-mix(in oklch, var(--bg) 85%, var(--fg) 15%); stroke: var(--bg); }
+  .svg-buzon .ink {
+    stroke: var(--accent); stroke-width: 2.5; fill: none; stroke-linecap: round;
+    stroke-dasharray: 80; stroke-dashoffset: 80;
+    animation: draw-ink 4s ease-in-out infinite;
+  }
+  @keyframes draw-ink {
+    0%, 100% { stroke-dashoffset: 80; }
+    40%, 70% { stroke-dashoffset: 0; }
+  }
+
+  /* ============================================================ */
+  /*  Zoom section — 3 SVGs big to show motion                    */
+  /* ============================================================ */
+  .zoom-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .zoom-card {
+    background: var(--bg); border: 2px solid var(--border);
+    aspect-ratio: 1; position: relative; overflow: hidden;
+  }
+  .zoom-card .art { position: absolute; inset: 10% 10% 28% 10%; }
+  .zoom-card .art svg { width: 100%; height: 100%; }
+  .zoom-card .label {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 14px 20px; border-top: 2px solid var(--border); background: var(--surface);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .zoom-card .label .n { font: 500 10px/1 var(--font-mono); letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+  .zoom-card .label .nm { font: 500 22px/1 var(--font-display); font-variation-settings: "opsz" 48, "SOFT" 60; letter-spacing: -0.01em; color: var(--fg); }
+  .zoom-card .label .nm em { color: var(--accent); font-style: italic; }
+
+  /* ---- footer ---- */
+  .end { max-width: 1280px; margin: 48px auto 0; color: #aaa; font: 14px/1.6 var(--font-body); border-top: 1px solid #2a2a2a; padding-top: 24px; }
+  .end b { color: #fff; }
+  .end ul { margin: 10px 0 0 20px; }
+
+</style>
+</head>
+<body>
+
+<div class="meta">
+  <h1>Iteración — <em>Fraunces</em> + un SVG vivo por cuarto</h1>
+  <p>
+    Dos cambios frente al mockup anterior. Fuente: <b>Fraunces</b> (variable, con ejes <code>opsz</code>, <code>SOFT</code> y <code>WONK</code>) — serif editorial con mucha más calidez que Times. A tamaño hero en 144opsz + SOFT 100 + WONK 1 las curvas se redondean y aparece ese aire "hogareño" que pediste, sin perder autoridad. A body size baja a 9opsz y se lee claro y pequeño.
+  </p>
+  <p>
+    Segundo cambio: el plano de la casa ya <b>no es texto</b>. Cada cuarto es una carta con su propio SVG animado — el sol pulsando para la puerta, las olas del Pacífico para Pasaje, vapor subiendo de la olla para la cocina, una flor abriéndose para el patio, el disco girando para música, estrellas titilando y la luna para Los que siguen, y la tinta dibujándose sobre el sobre para el buzón. El card es reconocible sin leer el nombre.
+  </p>
+
+  <div class="type-sample">
+    <div class="vs before">
+      <h3>antes — Times New Roman</h3>
+      <h2>La casa de <em>Flor</em>.</h2>
+    </div>
+    <div class="vs after">
+      <h3>ahora — Fraunces 144 · SOFT 100 · WONK 1</h3>
+      <h2>La casa de <em>Flor</em>.</h2>
+    </div>
+  </div>
+</div>
+
+<div class="section-label"><b>02 ·</b> EL PLANO CON LOS 7 SVGs VIVOS</div>
+
+<div class="ipad-wide"><div class="glass">
+  <div class="map-top">
+    <h2>La casa de <em>Flor</em></h2>
+    <div class="aside">
+      <div class="line1">— un regalo de Danilo —</div>
+      <div class="line2">Toca un cuarto para entrar</div>
+    </div>
+  </div>
+  <div class="rooms-grid">
+
+    <!-- Pasaje -->
+    <div class="room-card visited">
+      <div class="art">
+        <svg class="svg-pasaje" viewBox="0 0 100 70">
+          <circle class="sun2" cx="72" cy="22" r="9"/>
+          <path class="wave w1" d="M 0 40 Q 15 34, 30 40 T 60 40 T 100 40"/>
+          <path class="wave w2" d="M 0 50 Q 15 44, 30 50 T 60 50 T 100 50"/>
+          <path class="wave w3" d="M 0 60 Q 15 54, 30 60 T 60 60 T 100 60"/>
+        </svg>
+      </div>
+      <div class="label">
+        <span class="n">02</span>
+        <span class="name"><em>Pasaje</em></span>
+      </div>
+    </div>
+
+    <!-- Cocina -->
+    <div class="room-card visited">
+      <div class="art">
+        <svg class="svg-cocina" viewBox="0 0 100 80">
+          <path class="steam s1" d="M 35 30 Q 30 22, 35 14 Q 40 6, 35 0"/>
+          <path class="steam s2" d="M 50 30 Q 45 20, 52 10 Q 58 2, 52 -4"/>
+          <path class="steam s3" d="M 65 30 Q 62 22, 66 14 Q 70 6, 66 0"/>
+          <path class="heart" d="M 74 32 C 76 29, 80 29, 80 33 C 80 36, 74 40, 74 40 C 74 40, 68 36, 68 33 C 68 29, 72 29, 74 32 Z"/>
+          <path class="pot" d="M 25 36 L 26 34 L 74 34 L 75 36 L 72 72 L 28 72 Z"/>
+          <path class="pot" d="M 22 34 L 78 34" fill="none" stroke-linecap="round" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="label">
+        <span class="n">03</span>
+        <span class="name">La <em>cocina</em></span>
+      </div>
+    </div>
+
+    <!-- Patio -->
+    <div class="room-card">
+      <div class="art">
+        <svg class="svg-patio" viewBox="0 0 100 80">
+          <path class="stem" d="M 50 78 Q 50 60, 50 45"/>
+          <path class="stem" d="M 50 55 Q 56 50, 62 52"/>
+          <path class="leaf" d="M 60 54 Q 70 50, 74 42 Q 68 50, 60 54 Z"/>
+          <g style="transform: translateZ(0)">
+            <ellipse class="petal" cx="50" cy="28" rx="6" ry="12" style="transform: rotate(0deg) translateY(-12px) scale(0.85);"/>
+            <ellipse class="petal" cx="50" cy="28" rx="6" ry="12" style="transform: rotate(72deg) translateY(-12px) scale(0.85); transform-origin: 50px 40px;"/>
+            <ellipse class="petal" cx="50" cy="28" rx="6" ry="12" style="transform: rotate(144deg) translateY(-12px) scale(0.85); transform-origin: 50px 40px;"/>
+            <ellipse class="petal" cx="50" cy="28" rx="6" ry="12" style="transform: rotate(216deg) translateY(-12px) scale(0.85); transform-origin: 50px 40px;"/>
+            <ellipse class="petal" cx="50" cy="28" rx="6" ry="12" style="transform: rotate(288deg) translateY(-12px) scale(0.85); transform-origin: 50px 40px;"/>
+          </g>
+          <circle class="center" cx="50" cy="40" r="4.5"/>
+        </svg>
+      </div>
+      <div class="label">
+        <span class="n">04</span>
+        <span class="name">El <em>patio</em></span>
+      </div>
+    </div>
+
+    <!-- Música -->
+    <div class="room-card">
+      <div class="art">
+        <svg class="svg-musica" viewBox="0 0 100 80">
+          <text class="note n1" x="72" y="32">♪</text>
+          <text class="note n2" x="78" y="24">♫</text>
+          <text class="note n3" x="70" y="18">♪</text>
+          <g class="record" style="transform-box: fill-box;">
+            <circle cx="40" cy="42" r="30"/>
+            <circle class="groove" cx="40" cy="42" r="26"/>
+            <circle class="groove" cx="40" cy="42" r="22"/>
+            <circle class="groove" cx="40" cy="42" r="18"/>
+            <circle class="label2" cx="40" cy="42" r="10"/>
+            <circle class="spindle" cx="40" cy="42" r="2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="label">
+        <span class="n">05</span>
+        <span class="name">Sala de <em>música</em></span>
+      </div>
+    </div>
+
+    <!-- Familia (night) -->
+    <div class="room-card night">
+      <div class="art">
+        <svg class="svg-familia" viewBox="0 0 100 80">
+          <rect class="window-frame" x="12" y="10" width="76" height="60"/>
+          <line x1="50" y1="10" x2="50" y2="70" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+          <line x1="12" y1="40" x2="88" y2="40" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+          <circle class="moon" cx="72" cy="22" r="7"/>
+          <circle class="star" cx="24" cy="20" r="1.5"/>
+          <circle class="star" cx="38" cy="26" r="1"/>
+          <circle class="star" cx="58" cy="18" r="1.2"/>
+          <circle class="star" cx="26" cy="52" r="1"/>
+          <circle class="star" cx="44" cy="58" r="1.4"/>
+          <circle class="star" cx="78" cy="52" r="1"/>
+        </svg>
+      </div>
+      <div class="label">
+        <span class="n">06</span>
+        <span class="name">Los que <em>siguen</em></span>
+      </div>
+    </div>
+
+    <!-- Buzón as full-width banner -->
+    <div class="room-card buzon">
+      <div class="art">
+        <svg class="svg-buzon" viewBox="0 0 100 70">
+          <rect class="envelope" x="10" y="18" width="80" height="44"/>
+          <path class="flap" d="M 10 18 L 50 44 L 90 18 Z"/>
+          <path class="ink" d="M 26 38 Q 36 34, 50 36 T 74 36"/>
+        </svg>
+      </div>
+      <div class="text">
+        <span class="n">07 — el cuarto que espera al final</span>
+        <h3>El <em>buzón</em>.</h3>
+        <p class="sub">Un sobre con tu nombre.</p>
+      </div>
+      <span class="arrow">→</span>
+    </div>
+
+  </div>
+</div></div>
+
+<div class="section-label"><b>03 ·</b> ZOOM DE 3 CUARTOS PARA QUE SE VEA EL MOVIMIENTO</div>
+
+<div class="zoom-grid">
+  <div class="zoom-card">
+    <div class="art">
+      <svg class="svg-pasaje" viewBox="0 0 100 70">
+        <circle class="sun2" cx="72" cy="22" r="9"/>
+        <path class="wave w1" d="M 0 40 Q 15 34, 30 40 T 60 40 T 100 40"/>
+        <path class="wave w2" d="M 0 50 Q 15 44, 30 50 T 60 50 T 100 50"/>
+        <path class="wave w3" d="M 0 60 Q 15 54, 30 60 T 60 60 T 100 60"/>
+      </svg>
+    </div>
+    <div class="label"><span class="n">02</span><span class="nm"><em>Pasaje</em></span></div>
+  </div>
+
+  <div class="zoom-card">
+    <div class="art">
+      <svg class="svg-musica" viewBox="0 0 100 80">
+        <text class="note n1" x="72" y="32">♪</text>
+        <text class="note n2" x="78" y="24">♫</text>
+        <text class="note n3" x="70" y="18">♪</text>
+        <g class="record" style="transform-box: fill-box;">
+          <circle cx="40" cy="42" r="30"/>
+          <circle class="groove" cx="40" cy="42" r="26"/>
+          <circle class="groove" cx="40" cy="42" r="22"/>
+          <circle class="groove" cx="40" cy="42" r="18"/>
+          <circle class="label2" cx="40" cy="42" r="10"/>
+          <circle class="spindle" cx="40" cy="42" r="2"/>
+        </g>
+      </svg>
+    </div>
+    <div class="label"><span class="n">05</span><span class="nm">Sala de <em>música</em></span></div>
+  </div>
+
+  <div class="zoom-card" style="background: var(--night); border-color: var(--night);">
+    <div class="art">
+      <svg class="svg-familia" viewBox="0 0 100 80" style="color: oklch(96% 0.004 100);">
+        <rect class="window-frame" x="12" y="10" width="76" height="60"/>
+        <line x1="50" y1="10" x2="50" y2="70" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+        <line x1="12" y1="40" x2="88" y2="40" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+        <circle class="moon" cx="72" cy="22" r="7"/>
+        <circle class="star" cx="24" cy="20" r="1.5"/>
+        <circle class="star" cx="38" cy="26" r="1"/>
+        <circle class="star" cx="58" cy="18" r="1.2"/>
+        <circle class="star" cx="26" cy="52" r="1"/>
+        <circle class="star" cx="44" cy="58" r="1.4"/>
+        <circle class="star" cx="78" cy="52" r="1"/>
+      </svg>
+    </div>
+    <div class="label" style="background: var(--night); border-color: var(--night);"><span class="n" style="color: color-mix(in oklch, oklch(96% 0.004 100) 60%, transparent);">06</span><span class="nm" style="color: oklch(96% 0.004 100);">Los que <em>siguen</em></span></div>
+  </div>
+</div>
+
+<div class="end">
+  <p><b>Lo que estás viendo:</b></p>
+  <ul>
+    <li><b>Fraunces</b> reemplaza Times. En el título hero va con <code>opsz:144, SOFT:80, WONK:1</code> — eso redondea las terminaciones y da ese aire cálido casi manuscrito. A body baja a <code>opsz:9, SOFT:50</code>, neutral.</li>
+    <li><b>Los 7 SVG animados</b> corren como CSS puro, sin JS, sin Framer — son livianos y respetan <code>prefers-reduced-motion</code> (ya está en <code>globals.css</code>). Cada uno tiene su personalidad: sol pulsante, olas ondulando, vapor subiendo, flor latiendo, disco girando, estrellas titilando, tinta dibujándose.</li>
+    <li>El <b>subrayado visitado</b> sigue siendo el checkmark magenta en la label. Los cuartos no-visitados ya se diferencian por la animación — ya no dependemos de estética opaca para distinguirlos.</li>
+    <li>El <b>buzón</b> va full-width abajo como un banner editorial: invitación final, no un card más.</li>
+  </ul>
+  <p style="margin-top:14px;"><b>Implementación:</b> cada SVG vive como componente React (<code>src/components/room-svgs/</code>), importado a 1) HouseMap y 2) el hero de su cuarto. El SVG del HouseMap usa el tamaño pequeño; el del cuarto puede ser el mismo a escala mayor o una variante. Framer Motion sobrevive solo para transiciones de entrada — el movimiento continuo es CSS.</p>
+</div>
+
+</body>
+</html>

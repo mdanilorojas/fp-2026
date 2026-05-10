@@ -31,3 +31,25 @@ export const roomsBySlug: Record<RoomSlug, Room> = Object.fromEntries(
 ) as Record<RoomSlug, Room>;
 
 export const VISITABLE_ROOMS_FOR_BUZON_UNLOCK = 6; // visit all 6 non-buzon rooms to "earn" the buzon
+
+export function getNextRoom(slug: RoomSlug): Room | null {
+  const current = roomsBySlug[slug];
+  if (!current) return null;
+  return rooms.find((r) => r.order === current.order + 1) ?? null;
+}
+
+/**
+ * Strict linear unlock: a room is unlocked only if it's the first
+ * in-sequence room (pasaje) OR if its immediate predecessor has been visited.
+ * 'puerta' is the intro (not in the house map). 'buzon' additionally
+ * requires the kitchen key to have been used (enforced in its own room).
+ */
+export function isRoomUnlocked(slug: RoomSlug, visited: Set<string>): boolean {
+  const room = roomsBySlug[slug];
+  if (!room) return false;
+  if (slug === 'puerta') return true;
+  if (slug === 'pasaje') return true; // entry point after puerta
+  const prev = rooms.find((r) => r.order === room.order - 1);
+  if (!prev) return true;
+  return visited.has(prev.slug);
+}

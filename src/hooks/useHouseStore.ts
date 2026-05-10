@@ -2,12 +2,17 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { VISITABLE_ROOMS_FOR_BUZON_UNLOCK, type RoomSlug } from '@/data/rooms';
 
+export type KeyColor = 'rose' | 'amber' | 'leaf' | 'sky';
+export const KEY_COLORS: KeyColor[] = ['rose', 'amber', 'leaf', 'sky'];
+
 type HouseState = {
   visitedRooms: Set<string>;
   firstVisit: boolean;
   audioEnabled: boolean;
   savedCoupons: string[];
   hasOpenedLetter: boolean;
+  kitchenKeyColor: KeyColor | null;
+  kitchenKeyUsed: boolean;
 };
 
 type HouseActions = {
@@ -15,6 +20,8 @@ type HouseActions = {
   toggleAudio: () => void;
   saveCoupon: (id: string) => void;
   markLetterOpened: () => void;
+  setKitchenKey: (color: KeyColor) => void;
+  consumeKitchenKey: () => void;
   reset: () => void;
 };
 
@@ -24,14 +31,17 @@ const initialState: HouseState = {
   audioEnabled: true,
   savedCoupons: [],
   hasOpenedLetter: false,
+  kitchenKeyColor: null,
+  kitchenKeyUsed: false,
 };
 
 export const useHouseStore = create<HouseState & HouseActions>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       ...initialState,
       visitRoom: (slug) =>
         set((s) => {
+          if (s.visitedRooms.has(slug)) return s; // no-op — prevents re-render loops
           const next = new Set(s.visitedRooms);
           next.add(slug);
           const nonBuzon = [...next].filter((r) => r !== 'buzon');
@@ -46,6 +56,9 @@ export const useHouseStore = create<HouseState & HouseActions>()(
           savedCoupons: s.savedCoupons.includes(id) ? s.savedCoupons : [...s.savedCoupons, id],
         })),
       markLetterOpened: () => set({ hasOpenedLetter: true }),
+      setKitchenKey: (color) =>
+        set((s) => (s.kitchenKeyColor ? s : { kitchenKeyColor: color })),
+      consumeKitchenKey: () => set({ kitchenKeyUsed: true }),
       reset: () => set(initialState),
     }),
     {

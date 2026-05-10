@@ -13,7 +13,7 @@ import { useMediaExists } from '@/hooks/useMediaExists';
 
 export function Letter({ onFinish }: { onFinish: () => void }) {
   const hasAudio = useMediaExists(LETTER_AUDIO_PATH);
-  const [visible, setVisible] = useState<number>(0); // number of paragraphs visible
+  const [visible, setVisible] = useState<number>(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -23,11 +23,8 @@ export function Letter({ onFinish }: { onFinish: () => void }) {
     if (hasAudio && audioRef.current) {
       audioRef.current.src = LETTER_AUDIO_PATH;
       audioRef.current.play().catch(() => {
-        // fallback to paced reveal
         pacedReveal(cancelled);
       });
-      // Reveal paragraphs at fixed intervals proportional to expected audio length.
-      // Without explicit timings, we reveal one paragraph per ~6 seconds.
       let i = 0;
       const timer = setInterval(() => {
         i += 1;
@@ -66,26 +63,64 @@ export function Letter({ onFinish }: { onFinish: () => void }) {
     };
   }, [hasAudio, onFinish]);
 
+  const current = visible - 1;
+
   return (
-    <div className="relative mx-auto max-w-xl bg-[#fffbef] px-8 md:px-14 py-12 md:py-16 shadow-2xl rounded-sm border border-[#e8dcc5]">
-      <p className="font-hand text-3xl md:text-4xl text-deep-brown">{letterSalutation}</p>
-      <div className="mt-6 space-y-5 font-hand text-2xl md:text-3xl leading-snug text-deep-brown/90">
-        {letterParagraphs.slice(0, visible).map((p, i) => (
-          <motion.p key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-            {p.text}
-          </motion.p>
-        ))}
+    <article className="relative mx-auto max-w-2xl bg-paper border-2 border-border px-7 md:px-12 py-10 md:py-14">
+      {/* Pulse dot top-right to signal "being read now" */}
+      <span
+        aria-hidden="true"
+        className="absolute top-5 right-5 w-3 h-3 rounded-full bg-accent"
+        style={{ animation: 'rsv-raypulse 2s ease-in-out infinite' }}
+      />
+
+      <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-muted">
+        Carta
+      </span>
+      <p
+        className="mt-2 font-hand text-4xl md:text-5xl text-fg leading-none"
+      >
+        {letterSalutation}
+      </p>
+
+      <div className="mt-7 space-y-5 font-display text-lg md:text-xl leading-relaxed">
+        {letterParagraphs.map((p, i) => {
+          if (i >= visible) return null;
+          const isCurrent = i === current;
+          return (
+            <motion.p
+              key={i}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{
+                opacity: isCurrent ? 1 : 0.55,
+                y: 0,
+              }}
+              transition={{ duration: 0.8 }}
+              className={
+                isCurrent
+                  ? 'relative pl-4 -ml-[2px] border-l-2 border-accent text-fg'
+                  : 'text-fg/55'
+              }
+              style={{ fontVariationSettings: '"opsz" 14, "SOFT" 60' }}
+            >
+              {p.text}
+            </motion.p>
+          );
+        })}
       </div>
+
       {visible >= letterParagraphs.length && (
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-8 font-hand text-3xl md:text-4xl text-deep-brown"
+          transition={{ delay: 0.4 }}
+          className="mt-10 font-hand text-4xl md:text-5xl text-fg"
         >
           — {letterSignature}
         </motion.p>
       )}
+
       <audio ref={audioRef} preload="none" />
-    </div>
+    </article>
   );
 }

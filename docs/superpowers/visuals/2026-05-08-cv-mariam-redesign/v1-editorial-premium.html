@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mariam Rojas Piedra — MD, PhD(c) · CV</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  @page { size: A4; margin: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1714;
+    --ink-soft: #3a362f;
+    --ink-muted: #746d5f;
+    --oxblood: #6b1d2f;
+    --oxblood-deep: #4a0e1e;
+    --cream: #fdfbf5;
+    --cream-deep: #f6f0e0;
+    --rule: #c9b896;
+    --rule-soft: #e4dbc6;
+  }
+
+  html, body { background: #eeeae0; color: var(--ink); }
+
+  body {
+    font-family: 'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9.2pt;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 14mm 15mm 12mm;
+    position: relative;
+    page-break-after: always;
+    background: var(--cream);
+    margin: 8mm auto;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  @media print {
+    html, body { background: var(--cream); }
+    .page { margin: 0; box-shadow: none; }
+  }
+
+  /* Corner ornament */
+  .page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 40mm; height: 4mm;
+    background: var(--oxblood);
+  }
+  .page::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 42mm;
+    width: 4mm; height: 4mm;
+    background: var(--ink);
+  }
+
+  /* ─── Hero ───────────────────────────── */
+  .hero {
+    padding-top: 3mm;
+    border-bottom: 0.6pt solid var(--ink);
+    padding-bottom: 7mm;
+    margin-bottom: 7mm;
+    position: relative;
+  }
+  .hero .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 7pt;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--oxblood);
+    font-weight: 600;
+    margin-bottom: 6mm;
+  }
+  .hero .meta-row .right { color: var(--ink-muted); font-weight: 500; letter-spacing: 0.25em; }
+  .hero h1 {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-weight: 300;
+    font-size: 52pt;
+    line-height: 0.93;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .hero h1 .first { font-weight: 300; }
+  .hero h1 .middle {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--oxblood);
+  }
+  .hero h1 .last { font-weight: 500; }
+  .hero .credential {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 14pt;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    margin-top: 5mm;
+    font-weight: 300;
+  }
+  .hero .credential b { font-style: normal; font-weight: 500; color: var(--oxblood); letter-spacing: 0.02em; }
+
+  .contact-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6mm;
+    margin-top: 6mm;
+    padding-top: 4mm;
+    border-top: 0.3pt dotted var(--rule);
+  }
+  .contact-strip .item strong {
+    display: block;
+    font-size: 6.5pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-muted);
+    margin-bottom: 1mm;
+  }
+  .contact-strip .item span {
+    font-size: 9.5pt;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  /* ─── KPI row ───────────────────────────── */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 0 0 7mm;
+    border-top: 0.6pt solid var(--ink);
+    border-bottom: 0.6pt solid var(--ink);
+  }
+  .kpi {
+    padding: 4mm 4mm 4mm 0;
+    border-right: 0.3pt solid var(--rule);
+  }
+  .kpi:first-child { padding-left: 0; }
+  .kpi:last-child { border-right: none; padding-right: 0; }
+  .kpi .value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 32pt;
+    line-height: 1;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .kpi .value em { color: var(--oxblood); font-style: italic; font-weight: 300; }
+  .kpi .label {
+    font-size: 6.8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-top: 2mm;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+
+  /* ─── Grid ───────────────────────────── */
+  .grid { display: grid; grid-template-columns: 55mm 1fr; gap: 9mm; }
+  .grid-divider { position: relative; }
+
+  /* ─── Sections ───────────────────────────── */
+  .section { margin-bottom: 6mm; }
+  .section-label {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    font-family: 'Inter', sans-serif;
+    font-size: 6.8pt;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--oxblood);
+    margin-bottom: 3mm;
+    padding-bottom: 1.2mm;
+    border-bottom: 0.4pt solid var(--ink);
+  }
+  .section-label .no {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 9pt;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+
+  /* Sidebar */
+  .side-block { margin-bottom: 5.5mm; }
+  .side-block ul { list-style: none; }
+  .side-block li {
+    font-size: 8.4pt;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding: 0.6mm 0;
+    position: relative;
+    padding-left: 3.5mm;
+  }
+  .side-block li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--oxblood);
+    font-weight: 500;
+  }
+  .side-block li.lang {
+    padding-left: 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.3pt dotted var(--rule);
+    padding: 1.3mm 0;
+  }
+  .side-block li.lang::before { display: none; }
+  .side-block li.lang strong {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 8.6pt;
+  }
+  .side-block li.lang em {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 8.4pt;
+    color: var(--oxblood);
+  }
+
+  /* Statement */
+  .statement {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 11.5pt;
+    line-height: 1.5;
+    color: var(--ink);
+    font-weight: 300;
+    margin-bottom: 3mm;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .statement::first-letter {
+    font-size: 48pt;
+    float: left;
+    line-height: 0.88;
+    font-weight: 300;
+    color: var(--oxblood);
+    padding: 1.2mm 2.5mm 0 0;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+  }
+
+  /* Job entry */
+  .job {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 4mm;
+    margin-bottom: 3mm;
+    padding-bottom: 2mm;
+    border-bottom: 0.3pt dotted var(--rule);
+  }
+  .job:last-child { border-bottom: none; margin-bottom: 0; }
+  .job .where-what h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 10.5pt;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: 0;
+  }
+  .job .sub {
+    font-size: 8.5pt;
+    color: var(--ink-muted);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    margin-top: 0.6mm;
+    line-height: 1.3;
+  }
+  .job .when {
+    font-family: 'Inter', sans-serif;
+    font-size: 7.5pt;
+    letter-spacing: 0.12em;
+    color: var(--oxblood);
+    font-weight: 600;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Features */
+  ul.features { list-style: none; margin-top: 2mm; }
+  ul.features li {
+    position: relative;
+    padding-left: 6mm;
+    margin-bottom: 2mm;
+    font-size: 9pt;
+    line-height: 1.48;
+    color: var(--ink-soft);
+  }
+  ul.features li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2.2mm;
+    width: 3.5mm;
+    height: 0.5pt;
+    background: var(--oxblood);
+  }
+  ul.features li strong { color: var(--ink); font-weight: 600; }
+  ul.features li em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--oxblood);
+  }
+
+  /* Publications */
+  .pub {
+    padding: 1.8mm 0;
+    border-bottom: 0.3pt dotted var(--rule);
+    font-size: 8.4pt;
+    line-height: 1.42;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+  .pub:last-child { border-bottom: none; }
+  .pub .title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    color: var(--ink);
+    font-style: normal;
+  }
+  .pub .venue {
+    font-style: italic;
+    color: var(--ink-muted);
+    font-family: 'Fraunces', serif;
+    font-size: 8.2pt;
+  }
+  .pub .author-self {
+    color: var(--oxblood);
+    font-weight: 700;
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 7mm;
+    left: 15mm;
+    right: 15mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 6.8pt;
+    letter-spacing: 0.28em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-top: 2mm;
+    border-top: 0.3pt solid var(--rule);
+  }
+  .footer .mark {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--oxblood);
+    letter-spacing: 0.05em;
+    font-size: 8pt;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  /* Avoid break */
+  .section, .job, .pub { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ PAGE 1 ═══════════════════════════════════ -->
+<div class="page">
+
+  <div class="hero">
+    <div class="meta-row">
+      <span>Curriculum Vitae</span>
+      <span class="right">Barcelona · Spain</span>
+    </div>
+    <h1><span class="first">Mariam</span> <span class="middle">Rojas</span> <span class="last">Piedra</span></h1>
+    <p class="credential"><b>MD, PhD(c)</b> &mdash; Medical Oncologist &middot; Clinical Trials &middot; Translational Medicine</p>
+
+    <div class="contact-strip">
+      <div class="item"><strong>Telephone</strong><span>+34 603 308 880</span></div>
+      <div class="item"><strong>Correspondence</strong><span>mariamsrojasp@gmail.com</span></div>
+      <div class="item"><strong>Residence</strong><span>Barcelona, Spain</span></div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="value">19</div>
+      <div class="label">Oncology Trials<br>PI &middot; Sub&#8209;I</div>
+    </div>
+    <div class="kpi">
+      <div class="value">30<em>+</em></div>
+      <div class="label">SEOM / ESMO<br>Abstracts</div>
+    </div>
+    <div class="kpi">
+      <div class="value"><em>V</em></div>
+      <div class="label">GEMCAD<br>Research Grant</div>
+    </div>
+    <div class="kpi">
+      <div class="value">PhD<em>(c)</em></div>
+      <div class="label">Translational Med.<br>Univ. Barcelona</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <aside>
+      <div class="side-block">
+        <div class="section-label"><span class="no">i.</span> Clinical Focus</div>
+        <ul>
+          <li>Lower GI &amp; anal canal tumors</li>
+          <li>Early-phase oncology trials</li>
+          <li>Biomarker-driven development</li>
+          <li>Compassionate-use pathways</li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">ii.</span> Competencies</div>
+        <ul>
+          <li>Phase I&ndash;III trial conduct</li>
+          <li>Translational multi-omics</li>
+          <li>ctDNA / cfDNA analysis</li>
+          <li>Chromosomal instability</li>
+          <li>Metabolomic profiling</li>
+          <li>Immunotherapy resistance</li>
+          <li>Clinical bioinformatics</li>
+          <li>Safety &amp; toxicity mgmt.</li>
+          <li>Regulatory acumen</li>
+          <li>Scientific writing &amp; mentorship</li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">iii.</span> Languages</div>
+        <ul>
+          <li class="lang"><strong>Spanish</strong><em>Native</em></li>
+          <li class="lang"><strong>English</strong><em>C1 Advanced</em></li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">iv.</span> Memberships</div>
+        <ul>
+          <li>SEOM &mdash; Spanish Society of Medical Oncology</li>
+          <li>ESMO &mdash; European Society for Medical Oncology</li>
+          <li>GEMCAD &mdash; Spanish Multidisciplinary Group on Digestive Cancer</li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">v.</span> Certifications</div>
+        <ul>
+          <li>ICH GCP E6 (R3) &mdash; 2025</li>
+        </ul>
+      </div>
+    </aside>
+
+    <main>
+      <div class="section">
+        <div class="section-label"><span class="no">01.</span> Personal Statement</div>
+        <p class="statement">Medical oncologist subspecialized in colorectal and anal-canal tumors, committed to delivering high-quality patient care and advancing access to innovative therapies through clinical trials and compassionate-use programs. Active contributor to national and international translational collaborations &mdash; spanning deep learning to metabolomics &mdash; while pursuing a PhD in Translational Medicine at the University of Barcelona and completing training in clinical bioinformatics. Highly motivated to bridge clinical oncology and pharmaceutical drug development by contributing to early-phase, biomarker-driven oncology research.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label"><span class="no">02.</span> Professional Experience</div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Fellow &mdash; Lower GI Tumors Unit, Specialist Physician</h3>
+            <div class="sub">IDIBAPS &middot; Hospital Cl&iacute;nic de Barcelona</div>
+          </div>
+          <div class="when">2022 &mdash; Present</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Specialist Physician (Resident) &mdash; Medical Oncology</h3>
+            <div class="sub">Complejo Asistencial Universitario de Le&oacute;n</div>
+          </div>
+          <div class="when">2017 &mdash; 2022</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Faculty Member &mdash; Molecular Tumor Board (MOOC)</h3>
+            <div class="sub">Universitat de Barcelona &middot; Coursera</div>
+          </div>
+          <div class="when">2023 &mdash; Present</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label"><span class="no">03.</span> Clinical Trials &amp; Translational Research</div>
+        <ul class="features">
+          <li><strong>Principal (1) and sub-investigator (18)</strong> in early- and late-phase oncology trials &mdash; safeguarding patient safety, regulatory compliance and high-quality data delivery across multidisciplinary teams.</li>
+          <li>Resolves operational challenges and coordinates investigators, CRO partners, and clinical/research/support units to ensure <em>seamless trial execution</em> and patient-centered outcomes.</li>
+          <li>Applies regulatory and clinical-development principles to expand access through <strong>compassionate-use and expanded-access programs</strong>.</li>
+          <li><strong>PhD candidate</strong> investigating chromosomal instability &amp; metabolic subtypes as predictive biomarkers in CRC (derived from trial GEMCAD&nbsp;18-02). <em>Winner of the V GEMCAD Research Grant 2023.</em></li>
+          <li>Active collaborator integrating <strong>molecular profiling, multi-omics, ctDNA/cfDNA and deep-learning</strong> approaches to identify mechanisms of resistance and treatment adaptation in solid tumors.</li>
+          <li>Mentor of medical students, residents and international trainees; faculty in postgraduate oncology programs.</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>Mariam Rojas Piedra &middot; MD, PhD(c)</span>
+    <span class="mark">i. Profile</span>
+    <span>Page 1 / 2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PAGE 2 ═══════════════════════════════════ -->
+<div class="page">
+
+  <div class="hero" style="padding-top:2mm; padding-bottom:4mm; margin-bottom:6mm;">
+    <div class="meta-row">
+      <span>Credentials &amp; Scholarship</span>
+      <span class="right">Mariam Rojas Piedra &middot; MD, PhD(c)</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <aside>
+      <div class="side-block">
+        <div class="section-label"><span class="no">vi.</span> Specialized Rotations</div>
+        <ul>
+          <li><strong>Clinical Trials &amp; Molecular Biology</strong><br><em style="color:var(--ink-muted);font-style:italic;">Hospital Puerta de Hierro, Madrid &middot; 2021</em></li>
+          <li><strong>Cancer Genetics Unit</strong><br><em style="color:var(--ink-muted);font-style:italic;">Hospital Cl&iacute;nico San Carlos, Madrid &middot; 2021</em></li>
+          <li><strong>Clinical &amp; Translational Research in Cancer</strong><br><em style="color:var(--ink-muted);font-style:italic;">Cancer Research Center, Salamanca &middot; 2022</em></li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">vii.</span> Grant &amp; Distinction</div>
+        <ul>
+          <li><strong>Winner &mdash; V GEMCAD Research Grant 2023</strong><br>
+          <em style="font-family:'Fraunces',serif;font-style:italic;color:var(--oxblood);">&ldquo;Metabolic Subtypes, Chromosomal Instability and Treatment Efficacy in Colorectal Cancer &mdash; A Translational Study (GEMCAD-1802).&rdquo;</em></li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">viii.</span> Teaching</div>
+        <ul>
+          <li><strong>Faculty &mdash; Molecular Tumor Board</strong><br>Master's Program, Univ. Barcelona &middot; 2023&ndash;2025</li>
+          <li><strong>Faculty &mdash; Master's in Oncology</strong><br>Univ. Barcelona &middot; 2023&ndash;Present</li>
+          <li><strong>Clinical Mentor &amp; Supervisor</strong><br>Hospital Cl&iacute;nic de Barcelona &middot; incl. international trainees</li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <div class="section-label"><span class="no">ix.</span> Further Output</div>
+        <ul>
+          <li><strong>30+</strong> SEOM/ESMO abstracts (2018&ndash;2021) across GI, lung, breast &amp; GU oncology; &ge;3 oral communications.</li>
+          <li><strong>10+</strong> SEOM clinical-case chapters on toxicity management &amp; radiotherapy&ndash;immunotherapy synergy.</li>
+          <li><em style="font-style:italic;font-family:'Fraunces',serif;color:var(--oxblood);">Full list available upon request.</em></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main>
+      <div class="section">
+        <div class="section-label"><span class="no">04.</span> Education</div>
+        <div class="job">
+          <div class="where-what">
+            <h3>PhD Candidate &mdash; Translational Medicine and Research</h3>
+            <div class="sub">University of Barcelona &middot; V GEMCAD Research Grant 2023 (GEMCAD-1802 derivative)</div>
+          </div>
+          <div class="when">2024 &mdash; Present</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Master's &mdash; Clinical Trials Design &amp; Monitoring</h3>
+            <div class="sub">TECH University, Spain &middot; 60 ECTS</div>
+          </div>
+          <div class="when">2022 &mdash; 2023</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Master's &mdash; Medical Oncology</h3>
+            <div class="sub">ICO / SEOM, Spain &middot; 60 ECTS</div>
+          </div>
+          <div class="when">2019 &mdash; 2023</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Medical Oncology Residency &mdash; MIR Program</h3>
+            <div class="sub">Complejo Asistencial Universitario de Le&oacute;n</div>
+          </div>
+          <div class="when">2017 &mdash; 2022</div>
+        </div>
+        <div class="job">
+          <div class="where-what">
+            <h3>Medical Degree (MD)</h3>
+            <div class="sub">Central University of Ecuador &middot; Recognized by the Spanish Ministry of Education</div>
+          </div>
+          <div class="when">2008 &mdash; 2014</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label"><span class="no">05.</span> Selected Publications &mdash; First Author</div>
+        <div class="pub">
+          <span class="author-self">Rojas MS</span>, Manzi M, Madurga S, <em>et al.</em> <span class="title">Metabolic plasticity drives specific mechanisms of chemotherapy and targeted-therapy resistance in metastatic colorectal cancer.</span> <span class="venue">Explor Target Antitumor Ther. 2025;6:1002337.</span>
+        </div>
+        <div class="pub">
+          <span class="author-self">Rojas MS</span>, Rodrigo C, Moreno R, Cascante M, Maurel J. <span class="title">Current efficacy of immune-checkpoint inhibitors in microsatellite-unstable colorectal cancer and potential biomarkers.</span> <span class="venue">Explor Dig Dis. 2025;4:100564.</span>
+        </div>
+        <div class="pub">
+          <span class="author-self">Rojas MS</span>, Gonz&aacute;lez L, Cascante M, Maurel J. <span class="title">Polo-like kinase 1 inhibitors in refractory colorectal cancer: deciphering the myth of synthetic lethality.</span> <span class="venue">AME Clin Trials Rev. 2024;2.</span>
+        </div>
+        <div class="pub">
+          <span class="author-self">Rojas MS</span>, <em>et al.</em> <span class="title">Lactate dehydrogenase as a predictive biomarker to anti-EGFR therapy in RAS/BRAF wild-type left-sided metastatic CRC &mdash; a GEMCAD study.</span> <span class="venue">ESMO Congress 2025, Poster.</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label"><span class="no">06.</span> Selected Collaborative Publications</div>
+        <div class="pub">
+          Rodr&iacute;guez-Garc&iacute;a M, Salvador-Mart&iacute;n S, <span class="author-self">Rojas Piedra MS</span>, <em>et al.</em> <span class="title">Genetic variants associated with fluoropyrimidine-induced toxicity after pre-emptive DPYD pharmacogenetic testing.</span> <span class="venue">Pharmaceuticals. 2026;19:460.</span>
+        </div>
+        <div class="pub">
+          Gorr&iacute;a T, Sierra-Boada M, <span class="author-self">Rojas MS</span>, <em>et al.</em> <span class="title">Metabolic singularities in microsatellite-stable colorectal cancer: identifying key players in immunosuppression to improve immunotherapy response.</span> <span class="venue">Cancers (Basel). 2025;17(3):498.</span>
+        </div>
+        <div class="pub">
+          Bayo C, Marin S, Madurga S, &hellip;, <span class="author-self">Rojas MS</span>, <em>et al.</em> <span class="title">Retifanlimab and the arginase inhibitor CB-1158 in MSS-CRC patient-derived organoids co-cultured with tumor-infiltrating lymphocytes.</span> <span class="venue">Research Square. 2023 (preprint).</span>
+        </div>
+        <div class="pub">
+          S&aacute;nchez-Cousido LF, <span class="author-self">Rojas MS</span>, <em>et al.</em> <span class="title">Immunotherapy in elderly patients with advanced NSCLC: real-world data.</span> <span class="venue">J Thorac Oncol. 2019;14(Suppl):S882&ndash;883.</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="footer">
+    <span>mariamsrojasp@gmail.com &middot; +34 603 308 880</span>
+    <span class="mark">ii. Credentials</span>
+    <span>Page 2 / 2</span>
+  </div>
+</div>
+
+</body>
+</html>

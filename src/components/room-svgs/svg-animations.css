@@ -1,0 +1,146 @@
+/* CSS-only animations for the 7 room SVGs. Respects prefers-reduced-motion via globals.css. */
+
+/* --- Puerta: sun rays pulsing --- */
+.rsv-puerta .ray {
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform-origin: 50px 50px;
+  animation: rsv-raypulse 3.5s ease-in-out infinite;
+}
+.rsv-puerta .ray:nth-child(1) { animation-delay: 0s; }
+.rsv-puerta .ray:nth-child(2) { animation-delay: 0.4s; }
+.rsv-puerta .ray:nth-child(3) { animation-delay: 0.8s; }
+.rsv-puerta .ray:nth-child(4) { animation-delay: 1.2s; }
+.rsv-puerta .ray:nth-child(5) { animation-delay: 1.6s; }
+.rsv-puerta .ray:nth-child(6) { animation-delay: 2.0s; }
+.rsv-puerta .ray:nth-child(7) { animation-delay: 2.4s; }
+.rsv-puerta .ray:nth-child(8) { animation-delay: 2.8s; }
+@keyframes rsv-raypulse {
+  0%, 70%, 100% { opacity: 0.25; }
+  35% { opacity: 1; }
+}
+
+/* --- Pasaje: waves rolling --- */
+.rsv-pasaje .wave {
+  fill: none;
+  stroke: var(--color-fg);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.rsv-pasaje .w1 { animation: rsv-waveroll 4s ease-in-out infinite; }
+.rsv-pasaje .w2 { animation: rsv-waveroll 4s ease-in-out infinite -1.3s; }
+.rsv-pasaje .w3 { animation: rsv-waveroll 4s ease-in-out infinite -2.6s; }
+@keyframes rsv-waveroll {
+  0%   { transform: translateX(-8px); }
+  50%  { transform: translateX(8px); }
+  100% { transform: translateX(-8px); }
+}
+
+/* --- Cocina: steam rising --- */
+.rsv-cocina .steam {
+  fill: none;
+  stroke: var(--color-muted);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.rsv-cocina .s1 { animation: rsv-steam 3s ease-in-out infinite; }
+.rsv-cocina .s2 { animation: rsv-steam 3s ease-in-out infinite -1s; }
+.rsv-cocina .s3 { animation: rsv-steam 3s ease-in-out infinite -2s; }
+.rsv-cocina .heart {
+  fill: var(--color-accent);
+  opacity: 0;
+  animation: rsv-heartrise 6s ease-out infinite;
+}
+@keyframes rsv-steam {
+  0%   { transform: translateY(0) scaleY(0.6); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(-18px) scaleY(1.2); opacity: 0; }
+}
+@keyframes rsv-heartrise {
+  0%, 60% { transform: translateY(0); opacity: 0; }
+  70%     { opacity: 1; }
+  100%    { transform: translateY(-30px); opacity: 0; }
+}
+
+/* --- Patio: flower blooming + leaf falling --- */
+.rsv-patio .petal {
+  fill: var(--color-accent);
+  transform-box: fill-box;
+  transform-origin: center 120%;
+  animation: rsv-bloom 4s ease-in-out infinite;
+}
+.rsv-patio .leaf {
+  fill: var(--color-fg);
+  transform-box: fill-box;
+  transform-origin: top left;
+  animation: rsv-leaffall 5s ease-in-out infinite;
+}
+@keyframes rsv-bloom {
+  0%, 100% { transform: scale(0.9) rotate(0deg); }
+  50%      { transform: scale(1.06) rotate(6deg); }
+}
+@keyframes rsv-leaffall {
+  0%   { transform: translate(0, -4px) rotate(0deg); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translate(-6px, 22px) rotate(-40deg); opacity: 0; }
+}
+
+/* --- Música: record spinning + notes rising --- */
+.rsv-musica .record {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rsv-spin 6s linear infinite;
+}
+.rsv-musica .note {
+  fill: var(--color-accent);
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 18px;
+}
+.rsv-musica .n1 { animation: rsv-noteup 3s ease-out infinite; }
+.rsv-musica .n2 { animation: rsv-noteup 3s ease-out infinite -1s; }
+.rsv-musica .n3 { animation: rsv-noteup 3s ease-out infinite -2s; }
+@keyframes rsv-spin { to { transform: rotate(360deg); } }
+@keyframes rsv-noteup {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translate(-10px, -24px); opacity: 0; }
+}
+
+/* --- Familia: stars twinkling --- */
+.rsv-familia .moon { fill: var(--color-accent); }
+.rsv-familia .star {
+  fill: var(--color-bg);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rsv-twinkle 3s ease-in-out infinite;
+}
+.rsv-familia .star:nth-child(2) { animation-delay: 0.4s; }
+.rsv-familia .star:nth-child(3) { animation-delay: 0.8s; }
+.rsv-familia .star:nth-child(4) { animation-delay: 1.2s; }
+.rsv-familia .star:nth-child(5) { animation-delay: 1.6s; }
+.rsv-familia .star:nth-child(6) { animation-delay: 2.0s; }
+.rsv-familia .star:nth-child(7) { animation-delay: 2.4s; }
+@keyframes rsv-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50%      { opacity: 1; transform: scale(1.1); }
+}
+
+/* --- Buzón: ink drawing across envelope --- */
+.rsv-buzon .ink {
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: rsv-draw-ink 4s ease-in-out infinite;
+}
+@keyframes rsv-draw-ink {
+  0%, 100% { stroke-dashoffset: 80; }
+  40%, 70% { stroke-dashoffset: 0; }
+}

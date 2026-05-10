@@ -54,32 +54,62 @@ export function RecordPlayer({
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="relative bg-gradient-to-b from-[#3b2a1a] to-[#1e150d] rounded-2xl p-8 md:p-12 shadow-2xl">
+      <div className="relative border-2 border-border bg-fg text-bg p-8 md:p-12">
+        <div className="flex items-center justify-between mb-6">
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-bg/60">
+            Tocadiscos
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-bg/60">
+            {playing ? '● PLAY' : '○ PAUSA'}
+          </span>
+        </div>
+
         <div className="relative mx-auto w-64 h-64 md:w-80 md:h-80">
           <motion.div
             animate={rotate}
-            className="w-full h-full rounded-full bg-[radial-gradient(circle,#0a0a0a_0%,#1a1a1a_40%,#0a0a0a_60%,#222_100%)] shadow-inner relative"
+            className="w-full h-full rounded-full relative"
+            style={{
+              background:
+                'radial-gradient(circle, var(--color-fg) 0%, color-mix(in oklch, var(--color-fg) 85%, var(--color-bg) 15%) 40%, var(--color-fg) 60%, color-mix(in oklch, var(--color-fg) 90%, var(--color-bg) 10%) 100%)',
+              border: '2px solid var(--color-bg)',
+            }}
           >
+            {/* grooves */}
+            {[90, 75, 60, 45].map((r) => (
+              <span
+                key={r}
+                aria-hidden="true"
+                className="absolute rounded-full border border-bg/15"
+                style={{ inset: `${100 - r}%` }}
+              />
+            ))}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gold flex items-center justify-center">
-                <p className="font-serif text-deep-brown text-xs md:text-sm text-center px-1">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-accent flex items-center justify-center border-2 border-bg">
+                <p
+                  className="font-display italic text-bg text-sm md:text-base text-center px-1 leading-tight"
+                  style={{ fontVariationSettings: '"opsz" 36, "SOFT" 80, "WONK" 1' }}
+                >
                   {current?.title ?? 'Flor'}
                 </p>
               </div>
+              <span aria-hidden="true" className="absolute w-1.5 h-1.5 rounded-full bg-bg" />
             </div>
           </motion.div>
+
           {/* Tonearm */}
           <div
-            className={`absolute -right-8 md:-right-12 top-4 origin-bottom-right transition-transform duration-700 ${
-              playing ? 'rotate-[-18deg]' : 'rotate-[-40deg]'
+            className={`absolute -right-4 md:-right-10 top-2 origin-bottom-right transition-transform duration-700 ${
+              playing ? 'rotate-[-22deg]' : 'rotate-[-44deg]'
             }`}
+            aria-hidden="true"
           >
-            <div className="w-2 h-40 bg-gold rounded" />
-            <div className="absolute bottom-0 left-0 w-6 h-3 bg-gold rounded" />
+            <div className="w-1.5 h-40 bg-bg" />
+            <div className="absolute bottom-0 -left-1 w-5 h-2 bg-bg" />
+            <div className="absolute -top-1 left-[2px] w-3 h-3 rounded-full bg-accent border border-bg" />
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-3 gap-3">
+        <div className="mt-10 grid grid-cols-3 gap-2 md:gap-3">
           {songs.map((s) => (
             <SleeveButton key={s.id} song={s} active={current?.id === s.id && playing} onClick={() => select(s)} />
           ))}
@@ -93,21 +123,31 @@ export function RecordPlayer({
 function SleeveButton({ song, active, onClick }: { song: Song; active: boolean; onClick: () => void }) {
   const exists = useMediaExists(song.file);
   const disabled = exists === false;
+
+  const base = 'relative aspect-square border-2 flex flex-col items-center justify-center text-center p-3 transition-colors';
+  let palette: string;
+  if (active) {
+    palette = 'border-accent bg-accent text-bg';
+  } else if (disabled) {
+    palette = 'border-bg/20 bg-fg text-bg/40 cursor-not-allowed';
+  } else {
+    palette = 'border-bg/60 bg-fg text-bg hover:bg-accent hover:border-accent';
+  }
+
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`relative aspect-square rounded-lg border-2 flex flex-col items-center justify-center text-center p-3 transition ${
-        active
-          ? 'border-gold bg-gold/20 text-gold scale-105'
-          : disabled
-          ? 'border-paper/20 bg-paper/10 text-paper/40 cursor-not-allowed'
-          : 'border-paper/40 bg-paper/10 text-paper hover:scale-105 active:scale-95'
-      }`}
-    >
-      <p className="font-serif text-sm md:text-base">{song.title}</p>
-      <p className="text-xs opacity-70 mt-1">{song.artist}</p>
-      {disabled && <p className="absolute bottom-2 text-[10px] uppercase tracking-wider">Próximamente</p>}
+    <button onClick={onClick} disabled={disabled} className={`${base} ${palette}`}>
+      <p
+        className="font-display text-base md:text-lg leading-tight"
+        style={{ fontVariationSettings: '"opsz" 24, "SOFT" 60, "WONK" 1' }}
+      >
+        {song.title}
+      </p>
+      <p className="font-mono text-[9px] tracking-[0.12em] uppercase opacity-70 mt-1">{song.artist}</p>
+      {disabled && (
+        <p className="absolute bottom-2 font-mono text-[9px] tracking-[0.18em] uppercase">
+          próximamente
+        </p>
+      )}
     </button>
   );
 }

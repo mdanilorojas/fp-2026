@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Casa de Flor — Dirección visual (pregunta 1)</title>
+<meta name="viewport" content="width=1400">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+  body { background: #0e0e0e; color: #f6f6f6; padding: 28px 24px 80px; }
+  .hdr { max-width: 1360px; margin: 0 auto 28px; }
+  .hdr h1 { font-family: "Iowan Old Style", Georgia, serif; font-size: 30px; font-weight: 500; letter-spacing: -0.01em; }
+  .hdr p { margin-top: 10px; max-width: 720px; color: #b9b9b9; font-size: 15px; line-height: 1.5; }
+  .hdr p b { color: #ffd28a; }
+
+  .grid { max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  @media (max-width: 1400px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .dir {
+    border-radius: 14px; overflow: hidden; border: 1px solid #2a2a2a;
+    background: #151515; display: flex; flex-direction: column;
+  }
+  .dir header { padding: 18px 18px 10px; border-bottom: 1px solid #2a2a2a; }
+  .dir .num {
+    display: inline-block; font: 500 11px/1 ui-monospace, Menlo, monospace;
+    letter-spacing: 0.12em; color: #888; text-transform: uppercase;
+  }
+  .dir h2 { font: 500 18px/1.2 "Iowan Old Style", Georgia, serif; margin-top: 8px; color: #fafafa; letter-spacing: -0.005em; }
+  .dir .mood { margin-top: 8px; font-size: 12.5px; line-height: 1.5; color: #a8a8a8; min-height: 72px; }
+  .dir .refs { margin-top: 10px; font: 11px/1.4 ui-monospace, Menlo, monospace; color: #777; }
+
+  .swatches { display: flex; height: 22px; }
+  .swatches div { flex: 1; }
+
+  .preview { aspect-ratio: 3/4; position: relative; }
+
+  /* ---- shared preview layout (Pasaje card) ---- */
+  .card { position: absolute; inset: 0; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
+  .kicker { font: 500 10px/1 ui-monospace, Menlo, monospace; letter-spacing: 0.18em; text-transform: uppercase; }
+  .title { margin-top: 8px; font-size: 26px; line-height: 1.1; letter-spacing: -0.01em; }
+  .subtitle { margin-top: 8px; font-size: 13px; line-height: 1.5; }
+  .photo { border-radius: 4px; overflow: hidden; margin-top: 14px; height: 42%; position: relative; }
+  .photo .stand-in { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: italic 22px/1 inherit; }
+  .meta { font: 10px/1.4 ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.12em; }
+  .cta { align-self: flex-start; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 500; }
+
+  /* ---- 1. Editorial — Monocle ---- */
+  .d-editorial .preview { background: oklch(97% 0.012 80); color: oklch(20% 0.02 60); font-family: "Iowan Old Style", Charter, Georgia, serif; }
+  .d-editorial .kicker { color: oklch(58% 0.16 35); }
+  .d-editorial .title { font-weight: 500; }
+  .d-editorial .subtitle { font-family: -apple-system, system-ui, sans-serif; color: oklch(48% 0.015 60); }
+  .d-editorial .photo { background: linear-gradient(160deg, #f4c28b, #c04a2a); border: 1px solid oklch(89% 0.012 80); border-radius: 0; }
+  .d-editorial .photo .stand-in { color: #fff; font-style: italic; }
+  .d-editorial .cta { background: transparent; color: oklch(58% 0.16 35); border: 1px solid oklch(58% 0.16 35); border-radius: 0; font-family: -apple-system, system-ui, sans-serif; }
+  .d-editorial .meta { color: oklch(48% 0.015 60); font-family: ui-monospace, Menlo, monospace; }
+
+  /* ---- 2. Modern minimal — Linear ---- */
+  .d-minimal .preview { background: oklch(99% 0.002 240); color: oklch(18% 0.012 250); font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; }
+  .d-minimal .kicker { color: oklch(54% 0.012 250); }
+  .d-minimal .title { font-weight: 600; letter-spacing: -0.022em; }
+  .d-minimal .subtitle { color: oklch(54% 0.012 250); }
+  .d-minimal .photo { background: linear-gradient(180deg, #eef2f7, #cfd8e3); border-radius: 10px; }
+  .d-minimal .photo .stand-in { color: #90a2b6; font-style: normal; font-weight: 500; }
+  .d-minimal .cta { background: oklch(58% 0.18 255); color: #fff; border-radius: 999px; }
+  .d-minimal .meta { color: oklch(54% 0.012 250); font-variant-numeric: tabular-nums; }
+
+  /* ---- 3. Warm & soft — Stripe/Headspace (what we have now, but PROPERLY done) ---- */
+  .d-warm .preview { background: oklch(97% 0.018 70); color: oklch(22% 0.02 50); font-family: "Söhne", -apple-system, system-ui, sans-serif; }
+  .d-warm .kicker { color: oklch(64% 0.13 28); }
+  .d-warm .title { font-family: "Tiempos Headline", "Newsreader", "Iowan Old Style", Georgia, serif; font-weight: 500; }
+  .d-warm .subtitle { color: oklch(50% 0.018 50); }
+  .d-warm .photo { background: linear-gradient(160deg, #f4c28b, #c04a2a); border-radius: 14px; box-shadow: inset 0 0 40px rgba(255,200,120,0.35); }
+  .d-warm .photo .stand-in { color: #fff; }
+  .d-warm .cta { background: oklch(64% 0.13 28); color: #fff; border-radius: 14px; }
+  .d-warm .meta { color: oklch(50% 0.018 50); }
+
+  /* ---- 4. Tech / utility — Datadog ---- */
+  .d-tech .preview { background: oklch(98% 0.005 250); color: oklch(22% 0.02 240); font-family: -apple-system, Inter, system-ui, sans-serif; }
+  .d-tech .kicker { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; color: oklch(58% 0.16 145); }
+  .d-tech .title { font-weight: 600; letter-spacing: -0.015em; }
+  .d-tech .subtitle { color: oklch(50% 0.018 240); font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 12px; }
+  .d-tech .photo { background: repeating-linear-gradient(45deg, #e8edf2, #e8edf2 6px, #dde3eb 6px, #dde3eb 12px); border: 1px solid oklch(90% 0.008 240); border-radius: 4px; }
+  .d-tech .photo .stand-in { color: #667b91; font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-style: normal; font-size: 13px; }
+  .d-tech .cta { background: oklch(58% 0.16 145); color: #0a2415; border-radius: 4px; font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .d-tech .meta { color: oklch(50% 0.018 240); }
+
+  /* ---- 5. Brutalist — Are.na ---- */
+  .d-brutalist .preview { background: oklch(96% 0.004 100); color: oklch(15% 0.02 100); font-family: ui-monospace, "IBM Plex Mono", Menlo, monospace; padding: 0; }
+  .d-brutalist .kicker { font-family: ui-monospace, Menlo, monospace; color: oklch(15% 0.02 100); }
+  .d-brutalist .title { font-family: "Times New Roman", Georgia, serif; font-weight: 400; font-size: 46px; line-height: 0.92; letter-spacing: -0.02em; }
+  .d-brutalist .subtitle { font-family: ui-monospace, Menlo, monospace; color: oklch(40% 0.02 100); font-size: 11.5px; }
+  .d-brutalist .card { padding: 0; }
+  .d-brutalist .inner { padding: 22px; border: 2px solid oklch(15% 0.02 100); margin: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .d-brutalist .photo { background: #fff; border: 2px solid oklch(15% 0.02 100); border-radius: 0; margin-top: 16px; }
+  .d-brutalist .photo .stand-in { color: oklch(15% 0.02 100); font-family: "Times New Roman", Georgia, serif; font-size: 38px; font-style: italic; }
+  .d-brutalist .cta { background: oklch(60% 0.22 25); color: #fff; border-radius: 0; font-family: ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px; padding: 8px 14px; }
+  .d-brutalist .meta { color: oklch(40% 0.02 100); }
+
+  footer { max-width: 1360px; margin: 40px auto 0; color: #888; font-size: 13px; line-height: 1.6; }
+  footer b { color: #ffd28a; }
+  footer .current-note {
+    margin-top: 18px; padding: 14px 18px; border-left: 3px solid #ffd28a;
+    background: rgba(255, 210, 138, 0.06); border-radius: 0 6px 6px 0;
+  }
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <h1>Pregunta 1 — Dirección visual</h1>
+    <p>El diseño actual de la Casa de Flor apunta hacia <b>Warm &amp; soft</b> pero está ejecutado sin sistema (bordes dashed, sombras genéricas, Playfair Display como display sin jerarquía real, emojis de iconos). Estas son las <b>5 direcciones curadas de Open Design</b>. Cada una es una <b>paleta + stack tipográfico determinista</b>, no improvisación. La dirección que elijas se va a aplicar a los 7 cuartos.</p>
+    <p>Cada tarjeta muestra el cuarto "Pasaje" renderizado en esa dirección. Las paletas están en OKLch y vienen directo del <code>directions.ts</code> de OD.</p>
+  </div>
+
+  <div class="grid">
+    <!-- 1. Editorial Monocle -->
+    <section class="dir d-editorial">
+      <header>
+        <span class="num">01 · Editorial</span>
+        <h2>Monocle / FT</h2>
+        <p class="mood">Revista impresa. Mucho blanco, serifs grandes, paleta restringida: papel off-white + tinta + un acento cálido. Callada, inteligente.</p>
+        <p class="refs">Monocle · FT Weekend · NYT Magazine · It's Nice That</p>
+      </header>
+      <div class="swatches">
+        <div style="background:oklch(97% 0.012 80)"></div>
+        <div style="background:oklch(99% 0.005 80)"></div>
+        <div style="background:oklch(89% 0.012 80)"></div>
+        <div style="background:oklch(48% 0.015 60)"></div>
+        <div style="background:oklch(20% 0.02 60)"></div>
+        <div style="background:oklch(58% 0.16 35)"></div>
+      </div>
+      <div class="preview">
+        <div class="card">
+          <div>
+            <span class="kicker">Cuarto 2 · Pasaje</span>
+            <h3 class="title">Donde empezó tu forma de querer.</h3>
+            <p class="subtitle">La costa de El Oro vuelve a casa cada vez que nos cuidas.</p>
+            <div class="photo"><div class="stand-in">Pasaje</div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="meta">Pasaje, El Oro</span>
+            <span class="cta">Ver cuarto</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Modern minimal -->
+    <section class="dir d-minimal">
+      <header>
+        <span class="num">02 · Modern minimal</span>
+        <h2>Linear / Vercel</h2>
+        <p class="mood">Silencioso, preciso, nativo de software. Fuentes del sistema, paleta casi escala de grises, un acento saturado. El chrome desaparece.</p>
+        <p class="refs">Linear · Vercel · Notion 2024 · Stripe docs</p>
+      </header>
+      <div class="swatches">
+        <div style="background:oklch(99% 0.002 240)"></div>
+        <div style="background:oklch(100% 0 0)"></div>
+        <div style="background:oklch(92% 0.005 250)"></div>
+        <div style="background:oklch(54% 0.012 250)"></div>
+        <div style="background:oklch(18% 0.012 250)"></div>
+        <div style="background:oklch(58% 0.18 255)"></div>
+      </div>
+      <div class="preview">
+        <div class="card">
+          <div>
+            <span class="kicker">Cuarto 2 — Pasaje</span>
+            <h3 class="title">Donde empezó tu forma de querer.</h3>
+            <p class="subtitle">La costa de El Oro vuelve a casa cada vez que nos cuidas.</p>
+            <div class="photo"><div class="stand-in">Pasaje</div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="meta">Pasaje · El Oro</span>
+            <span class="cta">Entrar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Warm & soft -->
+    <section class="dir d-warm">
+      <header>
+        <span class="num">03 · Warm &amp; soft  ← parecido a lo actual, bien hecho</span>
+        <h2>Stripe pre-2020 / Headspace</h2>
+        <p class="mood">Fondos crema, acento suave, radios gentiles. Se lee como una revista de producto pensada, amigable sin ser cursi. Bueno para fintech, wellness, indie SaaS.</p>
+        <p class="refs">Stripe pre-2020 · Headspace · Substack · Mercury</p>
+      </header>
+      <div class="swatches">
+        <div style="background:oklch(97% 0.018 70)"></div>
+        <div style="background:oklch(99% 0.008 70)"></div>
+        <div style="background:oklch(90% 0.014 70)"></div>
+        <div style="background:oklch(50% 0.018 50)"></div>
+        <div style="background:oklch(22% 0.02 50)"></div>
+        <div style="background:oklch(64% 0.13 28)"></div>
+      </div>
+      <div class="preview">
+        <div class="card">
+          <div>
+            <span class="kicker">Cuarto 2 · Pasaje</span>
+            <h3 class="title">Donde empezó tu forma de querer.</h3>
+            <p class="subtitle">La costa de El Oro vuelve a casa cada vez que nos cuidas.</p>
+            <div class="photo"><div class="stand-in">Pasaje</div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="meta">Pasaje, El Oro</span>
+            <span class="cta">Entrar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Tech utility -->
+    <section class="dir d-tech">
+      <header>
+        <span class="num">04 · Tech / utility</span>
+        <h2>Datadog / GitHub</h2>
+        <p class="mood">Denso en datos, amigable al monospace. Hecho para ingenieros y operadores que quieren información por pulgada cuadrada. <b>Mal fit para este proyecto.</b></p>
+        <p class="refs">Datadog · GitHub · Cloudflare · Sentry</p>
+      </header>
+      <div class="swatches">
+        <div style="background:oklch(98% 0.005 250)"></div>
+        <div style="background:oklch(100% 0 0)"></div>
+        <div style="background:oklch(90% 0.008 240)"></div>
+        <div style="background:oklch(50% 0.018 240)"></div>
+        <div style="background:oklch(22% 0.02 240)"></div>
+        <div style="background:oklch(58% 0.16 145)"></div>
+      </div>
+      <div class="preview">
+        <div class="card">
+          <div>
+            <span class="kicker">ROOM_02 · PASAJE</span>
+            <h3 class="title">Donde empezó tu forma de querer.</h3>
+            <p class="subtitle">// la costa de El Oro vuelve a casa cada vez que nos cuidas.</p>
+            <div class="photo"><div class="stand-in">[ photo ]</div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="meta">loc: pasaje.el-oro</span>
+            <span class="cta">$ enter</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Brutalist -->
+    <section class="dir d-brutalist">
+      <header>
+        <span class="num">05 · Brutalist / experimental</span>
+        <h2>Are.na / Yale</h2>
+        <p class="mood">Tipografía fuerte. Grilla visible. Sans del sistema + un serif sobredimensionado. Confianza a través de la aspereza. <b>Probablemente muy fuerte para tu mamá.</b></p>
+        <p class="refs">Are.na · Yale · mschf · Read.cv</p>
+      </header>
+      <div class="swatches">
+        <div style="background:oklch(96% 0.004 100)"></div>
+        <div style="background:oklch(100% 0 0)"></div>
+        <div style="background:oklch(15% 0.02 100)"></div>
+        <div style="background:oklch(40% 0.02 100)"></div>
+        <div style="background:oklch(15% 0.02 100)"></div>
+        <div style="background:oklch(60% 0.22 25)"></div>
+      </div>
+      <div class="preview">
+        <div class="card">
+          <div class="inner">
+            <div>
+              <span class="kicker">002 / 007  PASAJE</span>
+              <h3 class="title">Donde<br>empezó tu<br><em>forma de querer.</em></h3>
+              <div class="photo"><div class="stand-in">Pasaje</div></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="meta">EL ORO · EC</span>
+              <span class="cta">Entrar →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Las 5 direcciones vienen de <code>apps/daemon/src/prompts/directions.ts</code> en Open Design. La idea es: un click en un radio → paleta + fuentes deterministas, sin que el modelo improvise. La dirección que elijas se lleva a <code>:root</code> de <code>globals.css</code> y de ahí al resto del sistema.</p>
+    <div class="current-note">
+      <b>Contexto del proyecto:</b> audiencia es tu mamá de 73 años (Flor), iPad Safari, emocional, sin tecnicismos. Las 2 direcciones con mejor fit son <b>Warm &amp; soft</b> (cálida, íntima, lo que ya apuntabas) y <b>Editorial — Monocle</b> (silenciosa, elegante, papel de revista, menos comercial). Las otras 3 son posibles pero con menos afinidad al tema.
+    </div>
+  </footer>
+</body>
+</html>
