@@ -30,6 +30,7 @@ yarn-error.log*
 
 # types
 next-env.d.ts
+tsconfig.tsbuildinfo
 
 # build artifacts
 dist/
